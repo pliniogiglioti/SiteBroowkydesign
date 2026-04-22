@@ -84,9 +84,12 @@ export default function Hero() {
           {/* Container alinhado ao max-width do site */}
           <div className="max-w-[1360px] mx-auto px-10 flex items-end justify-between">
 
-            {/* Left: social icons + tagline */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
+            {/* Left: tagline + social icons (embaixo) */}
+            <div className="flex flex-col gap-4">
+              <p className="font-geist font-bold text-[40px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
+                TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
+              </p>
+              <div className="flex items-center gap-3">
                 {socials.map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -94,23 +97,18 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-8 h-8 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
+                    className="w-12 h-12 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
                   >
-                    <Icon size={14} />
+                    <Icon size={22} />
                   </a>
                 ))}
               </div>
-              <p className="font-geist font-bold text-[11px] text-white uppercase tracking-[0.08em] leading-tight">
-                TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
-              </p>
             </div>
 
             {/* Right: description + buttons */}
-            <div className="flex flex-col gap-3 max-w-[270px] items-end">
-              <p className="font-dm text-[11px] text-white/55 leading-relaxed text-right">
-                Cada Projeto Que Assumo É Motivado Por Um Propósito,
-                Orientado Pela Paixão E Elaborado Para Gerar Um Impacto
-                Significativo É Duradouro.
+            <div className="flex flex-col gap-3 max-w-[400px] items-end">
+              <p className="font-dm text-[18px] text-white/55 leading-relaxed text-right">
+                Cada Projeto Que Assumo É Motivado Por Um Propósito, Orientado Pela Paixão E Elaborado Para Gerar Um Impacto Significativo É Duradouro.
               </p>
               <div className="flex items-center gap-3">
                 <a
