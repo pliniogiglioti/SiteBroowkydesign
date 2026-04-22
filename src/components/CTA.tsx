@@ -8,7 +8,7 @@ export default function CTA() {
 
   return (
     <section id="contact" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
-      <div className="max-w-[1360px] mx-auto px-10">
+      <div className="max-w-[1520px] mx-auto px-10">
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}

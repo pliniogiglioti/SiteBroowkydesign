@@ -85,7 +85,7 @@ export default function Projects() {
     <section id="projects" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
       <div className="absolute bottom-0 right-0 w-[500px] h-[400px] rounded-full bg-[#5700ef]/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1360px] mx-auto px-10">
+      <div className="max-w-[1520px] mx-auto px-10">
 
         {/* Header */}
         <div className="flex items-start justify-between mb-4 gap-6">

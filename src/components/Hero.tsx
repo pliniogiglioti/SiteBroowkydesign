@@ -36,29 +36,31 @@ export default function Hero() {
       {/* ── MAIN AREA ─────────────────────────────────── */}
       <div className="flex-1 relative overflow-hidden">
 
-        {/* Text — z:1 (behind image) */}
-        <div className="absolute top-[72px] left-0 right-0 z-[1] select-none overflow-hidden">
-          {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7 }}
-            style={{ fontSize: 'clamp(80px, 17vw, 280px)', x: gabrielX }}
-            className="font-geist font-black leading-[0.88] text-white text-left pl-10 tracking-[-0.03em]"
-          >
-            GABRIEL
-          </motion.h1>
-          
-          {/* TEIXEIRA — alinhado à direita, move para direita no scroll */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.7 }}
-            style={{ fontSize: 'clamp(80px, 17vw, 280px)', x: teixeiraX }}
-            className="font-geist font-black leading-[0.88] text-white text-right pr-10 tracking-[-0.03em]"
-          >
-            TEIXEIRA
-          </motion.h1>
+        {/* Text — z:1 (behind image) — dentro do container 1520px */}
+        <div className="absolute top-[72px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
+          <div className="w-full max-w-[1520px] px-10">
+            {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7 }}
+              style={{ fontSize: '280px', x: gabrielX }}
+              className="font-geist font-black leading-[0.88] text-white text-left tracking-[-0.03em]"
+            >
+              GABRIEL
+            </motion.h1>
+            
+            {/* TEIXEIRA — alinhado à direita, move para direita no scroll */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.08, duration: 0.7 }}
+              style={{ fontSize: '280px', x: teixeiraX }}
+              className="font-geist font-black leading-[0.88] text-white text-right tracking-[-0.03em]"
+            >
+              TEIXEIRA
+            </motion.h1>
+          </div>
         </div>
 
         {/* Person image — z:2 (in front of text, behind bottom bar) — zoom in no scroll */}
@@ -81,8 +83,8 @@ export default function Hero() {
           className="absolute bottom-0 left-0 right-0 pb-6"
           style={{ zIndex: 3 }}
         >
-          {/* Container alinhado ao max-width do site */}
-          <div className="max-w-[1360px] mx-auto px-10 flex items-end justify-between">
+          {/* Container alinhado ao max-width do site — 1520px */}
+          <div className="max-w-[1520px] mx-auto px-10 flex items-end justify-between">
 
             {/* Left: tagline + social icons (embaixo) */}
             <div className="flex flex-col gap-4">

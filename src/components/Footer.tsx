@@ -22,7 +22,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom copyright */}
-      <div className="border-t border-white/5 px-10 py-5 max-w-[1360px] mx-auto w-full flex items-center justify-between flex-wrap gap-3">
+      <div className="border-t border-white/5 px-10 py-5 max-w-[1520px] mx-auto w-full flex items-center justify-between flex-wrap gap-3">
         <p className="font-dm text-xs text-white/25">
           I bring innovative ideas to life through my designs and collaborations.
         </p>

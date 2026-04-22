@@ -10,7 +10,7 @@ export default function Testimonial() {
     <section ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[300px] rounded-full bg-[#5700ef]/6 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-[1360px] mx-auto px-10">
+      <div className="max-w-[1520px] mx-auto px-10">
 
         {/* Header */}
         <motion.h2

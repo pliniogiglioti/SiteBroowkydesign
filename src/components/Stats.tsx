@@ -39,7 +39,7 @@ export default function Stats() {
     <section ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full bg-[#5700ef]/6 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-[1360px] mx-auto px-10">
+      <div className="max-w-[1520px] mx-auto px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Left: stats vertical list */}
