@@ -24,7 +24,8 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
-            className="font-geist font-black text-[15.5vw] leading-[0.88] text-white text-center tracking-[-0.03em]"
+            className="font-geist font-black leading-[0.88] text-white text-center tracking-[-0.03em]"
+            style={{ fontSize: 'clamp(80px, 17vw, 280px)' }}
           >
             GABRIEL
           </motion.h1>
@@ -32,7 +33,8 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.7 }}
-            className="font-geist font-black text-[15.5vw] leading-[0.88] text-white text-center tracking-[-0.03em]"
+            className="font-geist font-black leading-[0.88] text-white text-center tracking-[-0.03em]"
+            style={{ fontSize: 'clamp(80px, 17vw, 280px)' }}
           >
             TEIXEIRA
           </motion.h1>
@@ -59,7 +61,7 @@ export default function Hero() {
           style={{ zIndex: 3 }}
         >
           {/* Container alinhado ao max-width do site */}
-          <div className="max-w-7xl mx-auto px-6 flex items-end justify-between">
+          <div className="max-w-[1360px] mx-auto px-10 flex items-end justify-between">
 
             {/* Left: social icons + tagline */}
             <div className="flex flex-col gap-3">

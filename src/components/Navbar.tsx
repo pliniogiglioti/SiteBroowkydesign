@@ -20,7 +20,7 @@ export default function Navbar() {
     >
       {/* Pill container com glass + bordas 30px */}
       <div
-        className="w-full max-w-3xl relative flex items-center justify-between px-6 py-3"
+        className="w-full max-w-[1360px] relative flex items-center justify-between px-8 py-3"
         style={{
           background: 'rgba(255, 255, 255, 0.06)',
           backdropFilter: 'blur(20px)',
