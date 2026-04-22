@@ -88,7 +88,7 @@ export default function Hero() {
 
             {/* Left: tagline + social icons (embaixo) */}
             <div className="flex flex-col gap-4">
-              <p className="font-geist font-bold text-[40px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
+              <p className="font-geist font-bold text-[35px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
                 TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
               </p>
               <div className="flex items-center gap-3">
