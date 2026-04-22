@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Início', href: '#hero' },
-  { label: 'Sobre', href: '#about' },
   { label: 'Serviços', href: '#services' },
   { label: 'Projetos', href: '#projects' },
+  { label: 'Experiência', href: '#about' },
 ]
 
 export default function Navbar() {
@@ -32,7 +31,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
 
-        {/* Logo — Broowky igual ao design */}
+        {/* Logo */}
         <a href="#hero" className="flex flex-col leading-none">
           <span className="font-geist font-black text-xl text-white tracking-tight">
             Broowky
@@ -42,7 +41,7 @@ export default function Navbar() {
           </span>
         </a>
 
-        {/* Desktop Nav — centro */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
@@ -55,7 +54,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* CTA — direita */}
+        {/* CTA */}
         <div className="hidden md:flex items-center">
           <a
             href="#contact"
