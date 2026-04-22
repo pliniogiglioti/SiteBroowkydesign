@@ -24,8 +24,8 @@ export default function Hero() {
   // TEIXEIRA moves right (+300px)
   const teixeiraX = useTransform(scrollYProgress, [0, 1], [0, 300])
   
-  // Image zooms in (scale 1 → 1.15)
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+  // Image zooms in (scale 1 → 1.3) — zoom mais forte
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.3])
 
   return (
     <section ref={ref} id="hero" className="relative h-screen flex flex-col overflow-hidden bg-[#0c0b0b]">
@@ -65,10 +65,10 @@ export default function Hero() {
         <motion.img
           src="/1.png"
           alt="Gabriel Teixeira"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 1 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15, duration: 1 }}
-          style={{ scale: imageScale, zIndex: 2 }}
+          style={{ scale: imageScale, zIndex: 2, transformOrigin: 'center center' }}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           draggable={false}
         />
