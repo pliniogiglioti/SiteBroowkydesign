@@ -30,13 +30,8 @@ export default function Navbar() {
         }}
       >
         {/* Logo */}
-        <a href="#hero" className="flex flex-col leading-none shrink-0">
-          <span className="font-geist font-black text-lg text-white tracking-tight">
-            Broowky
-          </span>
-          <span className="font-dm text-[8px] text-white/30 tracking-[0.35em] uppercase">
-            Design
-          </span>
+        <a href="#hero" className="shrink-0">
+          <img src="/logobroowk.svg" alt="Broowky Design" className="h-8 w-auto" />
         </a>
 
         {/* Desktop links — posicionados absolutamente à direita */}
