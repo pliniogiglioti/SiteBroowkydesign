@@ -42,7 +42,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-dm font-normal text-[15px] text-white/55 hover:text-white transition-colors duration-200 tracking-normal whitespace-nowrap"
+              className="font-dm font-normal text-[15px] text-white hover:text-white/70 transition-colors duration-200 tracking-normal whitespace-nowrap uppercase"
             >
               {link.label}
             </a>

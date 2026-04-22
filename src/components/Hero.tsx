@@ -37,7 +37,7 @@ export default function Hero() {
       <div className="flex-1 relative overflow-hidden">
 
         {/* Text — z:1 (behind image) — dentro do container 1520px */}
-        <div className="absolute top-[72px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
+        <div className="absolute top-[120px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
           <div className="w-full max-w-[1520px] px-10">
             {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
             <motion.h1
@@ -134,8 +134,8 @@ export default function Hero() {
       </div>
 
       {/* ── TICKER ───────────────────────────────────── */}
-      <div className="border-t border-b border-white/5 py-3 bg-[#5700ef]/5 relative z-10">
-        <Ticker />
+      <div className="border-t border-white/10 py-3 bg-[#5700ef] relative z-10">
+        <Ticker speed={35} />
       </div>
     </section>
   )

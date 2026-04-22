@@ -26,10 +26,10 @@ export default function Ticker({ direction = 'left', speed = 20, className = '' 
       >
         {items.map((role, i) => (
           <span key={i} className="flex items-center">
-            <span className="font-geist font-bold text-[42px] tracking-[0.02em] text-white/80 whitespace-nowrap px-6">
+            <span className="font-geist font-bold text-[42px] tracking-[0.02em] text-white whitespace-nowrap px-6">
               {role}
             </span>
-            <span className="text-[#5700ef] text-[42px] font-bold">—</span>
+            <span className="text-white text-[42px] font-bold">—</span>
           </span>
         ))}
       </div>
