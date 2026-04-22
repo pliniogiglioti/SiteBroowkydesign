@@ -7,7 +7,6 @@ const navLinks = [
   { label: 'Sobre', href: '#about' },
   { label: 'Serviços', href: '#services' },
   { label: 'Projetos', href: '#projects' },
-  { label: 'Contato', href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -26,31 +25,43 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'glass border-b border-white/5 py-3' : 'py-5'
+        scrolled
+          ? 'bg-[#0c0b0b]/80 backdrop-blur-md border-b border-white/5 py-3'
+          : 'bg-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#hero" className="font-geist font-bold text-lg tracking-tight text-white">
-          GT<span className="text-[#5700ef]">.</span>
+
+        {/* Logo — Broowky igual ao design */}
+        <a href="#hero" className="flex flex-col leading-none">
+          <span className="font-geist font-black text-xl text-white tracking-tight">
+            Broowky
+          </span>
+          <span className="font-dm text-[9px] text-white/30 tracking-[0.35em] uppercase">
+            Design
+          </span>
         </a>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav — centro */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="font-dm text-sm text-white/60 hover:text-white transition-colors duration-200"
+              className="font-dm text-xs text-white/55 hover:text-white transition-colors duration-200 tracking-wide"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <a href="#contact" className="btn-primary text-xs px-5 py-2.5">
+        {/* CTA — direita */}
+        <div className="hidden md:flex items-center">
+          <a
+            href="#contact"
+            className="bg-[#5700ef] hover:bg-[#7b2fff] text-white font-dm font-medium text-xs px-5 py-2.5 rounded-full transition-all duration-300"
+            style={{ boxShadow: '0 0 20px rgba(87,0,239,0.35)' }}
+          >
             Contato
           </a>
         </div>
@@ -59,8 +70,9 @@ export default function Navbar() {
         <button
           className="md:hidden text-white/70 hover:text-white transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
         >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -71,20 +83,25 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-white/5"
+            transition={{ duration: 0.25 }}
+            className="md:hidden bg-[#0c0b0b]/95 backdrop-blur-md border-t border-white/5 overflow-hidden"
           >
-            <nav className="flex flex-col px-6 py-4 gap-4">
+            <nav className="flex flex-col px-6 py-5 gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="font-dm text-sm text-white/70 hover:text-white transition-colors"
+                  className="font-dm text-sm text-white/60 hover:text-white transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
-              <a href="#contact" className="btn-primary text-center text-xs mt-2">
+              <a
+                href="#contact"
+                onClick={() => setMenuOpen(false)}
+                className="bg-[#5700ef] text-white font-dm font-medium text-xs px-5 py-3 rounded-full text-center mt-2 transition-all duration-300"
+              >
                 Contato
               </a>
             </nav>
