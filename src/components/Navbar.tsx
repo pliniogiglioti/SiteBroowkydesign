@@ -29,9 +29,9 @@ export default function Navbar() {
           borderRadius: '30px',
         }}
       >
-        {/* Logo */}
+        {/* Logo — 120px */}
         <a href="#hero" className="shrink-0">
-          <img src="/logobroowk.svg" alt="Broowky Design" className="h-8 w-auto" />
+          <img src="/logobroowk.svg" alt="Broowky Design" className="h-8 w-[120px] object-contain" />
         </a>
 
         {/* Desktop links — posicionados absolutamente à direita */}

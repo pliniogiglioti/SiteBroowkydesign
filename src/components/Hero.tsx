@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
 import Ticker from './Ticker'
 import { InstagramIcon, LinkedinIcon, WhatsAppIcon } from './SocialIcons'
 
@@ -9,8 +10,25 @@ const socials = [
 ]
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null)
+  
+  // Track scroll progress of this section
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  })
+
+  // GABRIEL moves left (-300px)
+  const gabrielX = useTransform(scrollYProgress, [0, 1], [0, -300])
+  
+  // TEIXEIRA moves right (+300px)
+  const teixeiraX = useTransform(scrollYProgress, [0, 1], [0, 300])
+  
+  // Image zooms in (scale 1 → 1.15)
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+
   return (
-    <section id="hero" className="relative h-screen flex flex-col overflow-hidden bg-[#0c0b0b]">
+    <section ref={ref} id="hero" className="relative h-screen flex flex-col overflow-hidden bg-[#0c0b0b]">
 
       {/* Purple glow */}
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] h-[55vw] rounded-full bg-[#5700ef]/12 blur-[150px] pointer-events-none z-0" />
@@ -19,36 +37,39 @@ export default function Hero() {
       <div className="flex-1 relative overflow-hidden">
 
         {/* Text — z:1 (behind image) */}
-        <div className="absolute top-[72px] left-0 right-0 z-[1] select-none">
+        <div className="absolute top-[72px] left-0 right-0 z-[1] select-none overflow-hidden">
+          {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
-            className="font-geist font-black leading-[0.88] text-white text-center tracking-[-0.03em]"
-            style={{ fontSize: 'clamp(80px, 17vw, 280px)' }}
+            style={{ fontSize: 'clamp(80px, 17vw, 280px)', x: gabrielX }}
+            className="font-geist font-black leading-[0.88] text-white text-left pl-10 tracking-[-0.03em]"
           >
             GABRIEL
           </motion.h1>
+          
+          {/* TEIXEIRA — alinhado à direita, move para direita no scroll */}
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.7 }}
-            className="font-geist font-black leading-[0.88] text-white text-center tracking-[-0.03em]"
-            style={{ fontSize: 'clamp(80px, 17vw, 280px)' }}
+            style={{ fontSize: 'clamp(80px, 17vw, 280px)', x: teixeiraX }}
+            className="font-geist font-black leading-[0.88] text-white text-right pr-10 tracking-[-0.03em]"
           >
             TEIXEIRA
           </motion.h1>
         </div>
 
-        {/* Person image — z:2 (in front of text, behind bottom bar) */}
+        {/* Person image — z:2 (in front of text, behind bottom bar) — zoom in no scroll */}
         <motion.img
           src="/1.png"
           alt="Gabriel Teixeira"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15, duration: 1 }}
+          style={{ scale: imageScale, zIndex: 2 }}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
-          style={{ zIndex: 2 }}
           draggable={false}
         />
 
