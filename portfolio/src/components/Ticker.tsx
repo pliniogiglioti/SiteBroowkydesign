@@ -1,0 +1,38 @@
+interface TickerProps {
+  direction?: 'left' | 'right'
+  speed?: number
+  className?: string
+}
+
+const roles = [
+  'UI/UX DESIGNER',
+  'ILLUSTRATOR',
+  'DESIGNER GRAPHICS',
+  'UI/UX DESIGNER',
+  'WEB DEVELOPER',
+]
+
+export default function Ticker({ direction = 'left', speed = 20, className = '' }: TickerProps) {
+  const items = [...roles, ...roles, ...roles, ...roles]
+
+  return (
+    <div className={`overflow-hidden w-full ${className}`}>
+      <div
+        className="flex items-center gap-0 w-max"
+        style={{
+          animation: `ticker ${speed}s linear infinite`,
+          animationDirection: direction === 'right' ? 'reverse' : 'normal',
+        }}
+      >
+        {items.map((role, i) => (
+          <span key={i} className="flex items-center">
+            <span className="font-geist font-bold text-xs tracking-[0.2em] text-white/80 whitespace-nowrap px-4">
+              {role}
+            </span>
+            <span className="text-[#5700ef] text-lg font-bold">—</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
