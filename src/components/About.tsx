@@ -51,9 +51,9 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="glass-card rounded-[8px] p-6"
+            className="glass-card rounded-[8px] p-8"
           >
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-x-4 gap-y-4">
               {tools.map((tool, i) => (
                 <motion.div
                   key={tool.name}
