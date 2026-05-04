@@ -101,7 +101,7 @@ export default function Hero() {
                     aria-label={label}
                     className="w-10 h-10 md:w-12 md:h-12 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
                   >
-                    <Icon size={20} className="md:w-[22px] md:h-[22px]" />
+                    <Icon size={20} />
                   </a>
                 ))}
               </div>
