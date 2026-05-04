@@ -36,7 +36,7 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="font-geist font-normal text-[20pt] text-white/50 leading-relaxed max-w-md"
+              className="font-geist font-normal text-[16px] text-white/50 leading-relaxed max-w-md"
             >
               Transformo ideias em sistemas visuais vivos — da essência da marca à experiência
               digital. Navego entre identidade e interface, construindo cada detalhe com
@@ -59,7 +59,7 @@ export default function About() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
+                className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default glass-card"
                 title={tool.name}
                 style={{
                   backgroundColor: tool.color + '22',
