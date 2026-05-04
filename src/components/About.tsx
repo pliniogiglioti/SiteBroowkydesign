@@ -36,7 +36,7 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="font-dm text-sm text-white/50 leading-relaxed max-w-md"
+              className="font-geist font-normal text-[20pt] text-white/50 leading-relaxed max-w-md"
             >
               Transformo ideias em sistemas visuais vivos — da essência da marca à experiência
               digital. Navego entre identidade e interface, construindo cada detalhe com
@@ -51,7 +51,7 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="grid grid-cols-4 gap-3"
+            className="grid grid-cols-4 gap-4"
           >
             {tools.map((tool, i) => (
               <motion.div
@@ -59,21 +59,18 @@ export default function About() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                className="glass-card rounded-xl p-3 flex flex-col items-center gap-2 cursor-default"
+                className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
                 title={tool.name}
+                style={{
+                  backgroundColor: tool.color + '22',
+                  border: `1px solid ${tool.color}44`,
+                }}
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center font-geist font-bold text-sm"
-                  style={{
-                    backgroundColor: tool.color + '22',
-                    border: `1px solid ${tool.color}44`,
-                    color: tool.color,
-                  }}
+                <span
+                  className="font-geist font-bold text-4xl"
+                  style={{ color: tool.color }}
                 >
                   {tool.icon}
-                </div>
-                <span className="font-dm text-[9px] text-white/40 text-center leading-tight">
-                  {tool.name}
                 </span>
               </motion.div>
             ))}
