@@ -44,7 +44,7 @@ export default function Stats() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full bg-[#5700ef]/6 blur-[100px] pointer-events-none" />
 
       <div className="max-w-[1520px] mx-auto px-5 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-8 md:gap-16 items-start">
 
           {/* Left: stats vertical list */}
           <div className="flex flex-col gap-6 md:gap-8">
