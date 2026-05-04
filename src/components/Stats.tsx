@@ -57,7 +57,7 @@ export default function Stats() {
                 className="flex flex-col gap-4"
               >
                 {/* Number and Icon in horizontal layout */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between">
                   <span className="font-geist font-black text-[clamp(2rem,5vw,4rem)] text-white leading-none">
                     <AnimatedNumber value={stat.value} isInView={isInView} delay={0.2 + i * 0.12} />
                   </span>
