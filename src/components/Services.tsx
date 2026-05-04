@@ -56,7 +56,7 @@ export default function Services() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="font-dm text-sm text-white/45 leading-relaxed max-w-sm"
+              className="font-dm text-[16px] text-white/45 leading-relaxed max-w-sm"
             >
               Gabriel Teixeira — designer apaixonado, baseado no Brasil, com um olhar apurado
               para estética e uma obsessão saudável por criatividade. Não me contento apenas em
@@ -84,7 +84,7 @@ export default function Services() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="font-dm text-xs text-white/35 leading-relaxed mb-6"
+              className="font-dm text-[16px] text-white/35 leading-relaxed mb-6"
             >
               Criamos designs bem pensados e inovadores que transformam visões em realidades
               significativas, combinando criatividade e estratégia para inspirar, envolver e
@@ -137,7 +137,7 @@ export default function Services() {
                         transition={{ duration: 0.35, ease: 'easeOut' }}
                         className="overflow-hidden"
                       >
-                        <p className="font-dm text-sm text-white/50 leading-relaxed pb-5 pr-8">
+                        <p className="font-dm text-[16px] text-white/50 leading-relaxed pb-5 pr-8">
                           {service.description}
                         </p>
 

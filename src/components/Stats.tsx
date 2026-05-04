@@ -90,7 +90,7 @@ export default function Stats() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25, duration: 0.6 }}
-              className="font-dm text-sm text-white/40 leading-relaxed"
+              className="font-dm text-[16px] text-white/40 leading-relaxed"
             >
               Do conceito à criação, transformo visões em realidade com um design criado para
               inspirar, conectar e deixar uma impressão duradoura, permitindo que as marcas

@@ -72,7 +72,7 @@ function ProjectCard({ project, index, isInView }: { project: typeof projects[0]
 
       {/* Text */}
       <h3 className="font-geist font-bold text-white text-sm mb-1">{project.title}</h3>
-      <p className="font-dm text-xs text-white/40 leading-relaxed line-clamp-2">{project.description}</p>
+      <p className="font-dm text-[16px] text-white/40 leading-relaxed line-clamp-2">{project.description}</p>
     </motion.div>
   )
 }
@@ -115,7 +115,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.15, duration: 0.6 }}
-          className="font-dm text-sm text-white/40 max-w-md leading-relaxed mb-10"
+          className="font-dm text-[16px] text-white/40 max-w-md leading-relaxed mb-10"
         >
           Criamos designs bem pensados e inovadores que transformam visões em realidades
           significativas, combinando criatividade e estratégia para inspirar, envolver e causar impacto.

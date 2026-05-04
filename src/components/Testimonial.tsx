@@ -34,7 +34,7 @@ export default function Testimonial() {
             {/* Quote mark */}
             <span className="font-geist font-black text-5xl text-white/90 leading-none">"</span>
 
-            <p className="font-dm text-base text-white/70 leading-relaxed">
+            <p className="font-dm text-[16px] text-white/70 leading-relaxed">
               Trabalhar com eles foi uma alegria imensa; a paixão, o profissionalismo e a
               criatividade deles.
             </p>
@@ -57,7 +57,7 @@ export default function Testimonial() {
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-white/4 border border-white/6">
               {/* Footer note inside image */}
               <div className="absolute bottom-5 left-5 right-5">
-                <p className="font-dm text-xs text-white/40 leading-relaxed">
+                <p className="font-dm text-[16px] text-white/40 leading-relaxed">
                   Fundado na confiança, aprimorando valor e criando laços que as pessoas valorizam.
                 </p>
               </div>
