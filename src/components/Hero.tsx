@@ -37,14 +37,14 @@ export default function Hero() {
       <div className="flex-1 relative overflow-hidden">
 
         {/* Text — z:1 (behind image) — dentro do container 1520px */}
-        <div className="absolute top-[120px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
-          <div className="w-full max-w-[1520px] px-10">
+        <div className="absolute top-[80px] md:top-[120px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
+          <div className="w-full max-w-[1520px] px-5 md:px-10">
             {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7 }}
-              style={{ fontSize: '280px', x: gabrielX }}
+              style={{ fontSize: 'clamp(80px, 20vw, 280px)', x: gabrielX }}
               className="font-geist font-black leading-[0.88] text-white text-left tracking-[-0.03em]"
             >
               GABRIEL
@@ -55,7 +55,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.08, duration: 0.7 }}
-              style={{ fontSize: '280px', x: teixeiraX }}
+              style={{ fontSize: 'clamp(80px, 20vw, 280px)', x: teixeiraX }}
               className="font-geist font-black leading-[0.88] text-white text-right tracking-[-0.03em]"
             >
               TEIXEIRA
@@ -80,18 +80,18 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="absolute bottom-0 left-0 right-0 pb-6"
+          className="absolute bottom-0 left-0 right-0 pb-4 md:pb-6"
           style={{ zIndex: 3 }}
         >
           {/* Container alinhado ao max-width do site — 1520px */}
-          <div className="max-w-[1520px] mx-auto px-10 flex items-end justify-between">
+          <div className="max-w-[1520px] mx-auto px-5 md:px-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
 
             {/* Left: tagline + social icons (embaixo) */}
-            <div className="flex flex-col gap-4">
-              <p className="font-geist font-bold text-[35px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
+            <div className="flex flex-col gap-3 md:gap-4">
+              <p className="font-geist font-bold text-[20px] md:text-[35px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
                 TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 {socials.map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -99,17 +99,17 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-12 h-12 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
                   >
-                    <Icon size={22} />
+                    <Icon size={20} className="md:w-[22px] md:h-[22px]" />
                   </a>
                 ))}
               </div>
             </div>
 
             {/* Right: description + buttons */}
-            <div className="flex flex-col gap-3 max-w-[400px] items-end">
-              <p className="font-dm text-[18px] text-white/55 leading-relaxed text-right">
+            <div className="flex flex-col gap-3 max-w-[400px] items-start md:items-end">
+              <p className="font-dm text-[14px] md:text-[18px] text-white/55 leading-relaxed text-left md:text-right">
                 Cada Projeto Que Assumo É Motivado Por Um Propósito, Orientado Pela Paixão E Elaborado Para Gerar Um Impacto Significativo É Duradouro.
               </p>
               <div className="flex items-center gap-3">

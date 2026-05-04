@@ -35,11 +35,11 @@ export default function Services() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="services" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
+    <section id="services" ref={ref} className="py-12 md:py-20 bg-[#0c0b0b] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[#5700ef]/6 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1520px] mx-auto px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="max-w-[1520px] mx-auto px-5 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
 
           {/* Left: title + description + cta */}
           <div className="flex flex-col gap-6 lg:sticky lg:top-28">

@@ -17,9 +17,9 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="about" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
-      <div className="max-w-[1520px] mx-auto px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section id="about" ref={ref} className="py-12 md:py-20 bg-[#0c0b0b] relative overflow-hidden">
+      <div className="max-w-[1520px] mx-auto px-5 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
 
           {/* Left: title + description */}
           <div className="flex flex-col gap-6">
@@ -51,16 +51,16 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="glass-card rounded-[8px] p-12 flex justify-center"
+            className="glass-card rounded-[8px] p-6 md:p-12 flex justify-center"
           >
-            <div className="grid grid-cols-4 gap-x-8 gap-y-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-x-8 md:gap-y-8">
               {tools.map((tool, i) => (
                 <motion.div
                   key={tool.name}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                  className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
+                  className="w-[80px] h-[80px] md:w-[104px] md:h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
                   title={tool.name}
                   style={{
                     backgroundColor: tool.color + '22',
@@ -68,7 +68,7 @@ export default function About() {
                   }}
                 >
                   <span
-                    className="font-geist font-bold text-4xl"
+                    className="font-geist font-bold text-2xl md:text-4xl"
                     style={{ color: tool.color }}
                   >
                     {tool.icon}
