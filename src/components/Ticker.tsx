@@ -9,7 +9,6 @@ const roles = [
   'ILLUSTRATOR',
   'DESIGNER GRAPHICS',
   'UI/UX DESIGNER',
-  'WEB DEVELOPER',
 ]
 
 export default function Ticker({ direction = 'left', speed = 20, className = '' }: TickerProps) {
