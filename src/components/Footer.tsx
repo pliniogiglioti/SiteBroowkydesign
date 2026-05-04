@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="bg-[#0c0b0b] border-t border-white/5">
 
       {/* Ticker */}
-      <div className="border-b border-white/5 py-3 bg-[#5700ef]/5">
-        <Ticker direction="right" speed={25} />
+      <div className="border-t border-white/10 py-3 bg-[#5700ef]">
+        <Ticker direction="right" speed={35} />
       </div>
 
       {/* Logo centered */}

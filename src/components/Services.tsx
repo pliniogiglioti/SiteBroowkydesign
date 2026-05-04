@@ -49,7 +49,7 @@ export default function Services() {
               transition={{ duration: 0.6 }}
               className="section-title text-[clamp(2rem,4vw,3.5rem)] text-white leading-tight max-w-md"
             >
-              SERVIÇOS CRIATIVOS QUE ESTIMULAM O CRESCIMENTO
+              SERVIÇOS CRIATIVOS<br />QUE ESTIMULAM O CRESCIMENTO
             </motion.h2>
 
             <motion.p

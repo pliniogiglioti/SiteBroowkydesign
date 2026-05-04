@@ -1,5 +1,6 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useRef, useEffect } from 'react'
+import { Rocket, Lock, ClipboardList } from 'lucide-react'
 
 function AnimatedNumber({ value, isInView, delay }: { value: number; isInView: boolean; delay: number }) {
   const motionValue = useMotionValue(0)
@@ -18,19 +19,19 @@ const stats = [
     value: 20,
     label: 'Projetos Entregues',
     description: 'Soluções de design simples e eficazes que ajudam as marcas a se destacarem e a alcançarem o sucesso.',
-    icon: '🛒',
+    icon: Rocket,
   },
   {
     value: 12,
     label: 'Interfaces Criadas',
     description: 'Criamos interfaces fáceis de usar, com navegação intuitiva e projetadas pensando nas pessoas.',
-    icon: '🔒',
+    icon: Lock,
   },
   {
     value: 18,
     label: 'Clientes Satisfeitos',
     description: 'Criamos projetos fáceis de gerenciar, de execução tranquila e pensados para as pessoas.',
-    icon: '📋',
+    icon: ClipboardList,
   },
 ]
 
@@ -53,20 +54,21 @@ export default function Stats() {
                 initial={{ opacity: 0, x: -30 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.15 + i * 0.12, duration: 0.6 }}
-                className="flex items-start gap-3 md:gap-6"
+                className="flex items-center gap-3 md:gap-6"
               >
-                {/* Number */}
-                <span className="font-geist font-black text-[clamp(2rem,5vw,4rem)] text-white leading-none shrink-0">
-                  <AnimatedNumber value={stat.value} isInView={isInView} delay={0.2 + i * 0.12} />
-                </span>
-
-                {/* Icon in glass box */}
-                <div className="glass-card rounded-lg p-2 md:p-3 flex items-center justify-center shrink-0 mt-1 md:mt-2">
-                  <span className="text-xl md:text-2xl">{stat.icon}</span>
+                {/* Number and Icon in vertical layout */}
+                <div className="flex flex-col items-center gap-3 shrink-0">
+                  <span className="font-geist font-black text-[clamp(2rem,5vw,4rem)] text-white leading-none">
+                    <AnimatedNumber value={stat.value} isInView={isInView} delay={0.2 + i * 0.12} />
+                  </span>
+                  
+                  <div className="glass-card rounded-lg p-3 flex items-center justify-center w-[60px] h-[60px]">
+                    <stat.icon size={28} className="text-white/60" strokeWidth={1.5} />
+                  </div>
                 </div>
 
                 {/* texts */}
-                <div className="flex flex-col gap-1 pt-1 md:pt-2">
+                <div className="flex flex-col gap-1">
                   <p className="font-geist font-normal text-[14px] md:text-[16px] text-white/50 leading-relaxed max-w-[280px]">
                     {stat.description}
                   </p>
