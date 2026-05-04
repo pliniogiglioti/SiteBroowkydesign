@@ -51,29 +51,31 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="grid grid-cols-4 gap-4"
+            className="glass-card rounded-[8px] p-6"
           >
-            {tools.map((tool, i) => (
-              <motion.div
-                key={tool.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default glass-card"
-                title={tool.name}
-                style={{
-                  backgroundColor: tool.color + '22',
-                  border: `1px solid ${tool.color}44`,
-                }}
-              >
-                <span
-                  className="font-geist font-bold text-4xl"
-                  style={{ color: tool.color }}
+            <div className="grid grid-cols-4 gap-4">
+              {tools.map((tool, i) => (
+                <motion.div
+                  key={tool.name}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
+                  className="w-[104px] h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
+                  title={tool.name}
+                  style={{
+                    backgroundColor: tool.color + '22',
+                    border: `1px solid ${tool.color}44`,
+                  }}
                 >
-                  {tool.icon}
-                </span>
-              </motion.div>
-            ))}
+                  <span
+                    className="font-geist font-bold text-4xl"
+                    style={{ color: tool.color }}
+                  >
+                    {tool.icon}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
