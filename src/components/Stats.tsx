@@ -15,19 +15,22 @@ function AnimatedNumber({ value, isInView, delay }: { value: number; isInView: b
 
 const stats = [
   {
-    value: 320,
+    value: 20,
     label: 'Projetos Entregues',
     description: 'Soluções de design simples e eficazes que ajudam as marcas a se destacarem e a alcançarem o sucesso.',
+    icon: '🛒',
   },
   {
-    value: 280,
+    value: 12,
     label: 'Interfaces Criadas',
     description: 'Criamos interfaces fáceis de usar, com navegação intuitiva e projetadas pensando nas pessoas.',
+    icon: '🔒',
   },
   {
-    value: 420,
+    value: 18,
     label: 'Clientes Satisfeitos',
     description: 'Criamos projetos fáceis de gerenciar, de execução tranquila e pensados para as pessoas.',
+    icon: '📋',
   },
 ]
 
@@ -50,20 +53,21 @@ export default function Stats() {
                 initial={{ opacity: 0, x: -30 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.15 + i * 0.12, duration: 0.6 }}
-                className="flex items-start gap-5 border-b border-white/5 pb-8 last:border-0 last:pb-0"
+                className="flex items-start gap-6"
               >
                 {/* Number */}
                 <span className="font-geist font-black text-[clamp(2.5rem,5vw,4rem)] text-white leading-none shrink-0">
                   <AnimatedNumber value={stat.value} isInView={isInView} delay={0.2 + i * 0.12} />
                 </span>
 
-                {/* Icon + texts */}
+                {/* Icon in glass box */}
+                <div className="glass-card rounded-lg p-3 flex items-center justify-center shrink-0 mt-2">
+                  <span className="text-2xl">{stat.icon}</span>
+                </div>
+
+                {/* texts */}
                 <div className="flex flex-col gap-1 pt-2">
-                  <div className="w-6 h-6 rounded-full bg-[#5700ef]/20 border border-[#5700ef]/40 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#5700ef]" />
-                  </div>
-                  <p className="font-geist font-bold text-sm text-white/80 mt-1">{stat.label}</p>
-                  <p className="font-dm text-xs text-white/40 leading-relaxed max-w-[220px]">
+                  <p className="font-geist font-normal text-[16px] text-white/50 leading-relaxed max-w-[280px]">
                     {stat.description}
                   </p>
                 </div>
