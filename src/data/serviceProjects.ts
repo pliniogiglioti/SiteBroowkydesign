@@ -229,18 +229,18 @@ export const serviceWorks: ServiceProject[][] = [
       "folder": "/servicos/catalogos/outdoor",
       "files": [
         {
-          "name": "pdf 01",
-          "path": "/servicos/catalogos/outdoor/pdf_01.pdf",
+          "name": "pdf 01 compressed",
+          "path": "/servicos/catalogos/outdoor/pdf_01_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 02",
-          "path": "/servicos/catalogos/outdoor/pdf_02.pdf",
+          "name": "pdf 02 compressed",
+          "path": "/servicos/catalogos/outdoor/pdf_02_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 03",
-          "path": "/servicos/catalogos/outdoor/pdf_03.pdf",
+          "name": "pdf 03 compressed",
+          "path": "/servicos/catalogos/outdoor/pdf_03_compressed.pdf",
           "type": "pdf"
         }
       ]
