@@ -41,7 +41,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "destilus",
       "category": "Identidade_visual",
       "modal": "pdf",
-      "image": "/servicos/Identidade_visual/destilus/Capa.jpg",
+      "image": "/servicos/Identidade_visual/destilus/capa.webp",
       "folder": "/servicos/Identidade_visual/destilus",
       "files": [
         {
@@ -93,7 +93,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "Boots Horse",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/boots_horse/capa.png",
+      "image": "/servicos/catalogos/boots_horse/capa.webp",
       "folder": "/servicos/catalogos/boots_horse",
       "files": [
         {
@@ -147,7 +147,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "Tomahawk Collection",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/collection/capa.png",
+      "image": "/servicos/catalogos/collection/capa.webp",
       "folder": "/servicos/catalogos/collection",
       "files": [
         {
@@ -201,7 +201,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "American Country",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/american_courntry/capa.png",
+      "image": "/servicos/catalogos/american_courntry/capa.webp",
       "folder": "/servicos/catalogos/american_courntry",
       "files": [
         {
@@ -225,7 +225,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "Tomahawk Outdoor",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/outdoor/capa.png",
+      "image": "/servicos/catalogos/outdoor/capa.webp",
       "folder": "/servicos/catalogos/outdoor",
       "files": [
         {
@@ -249,7 +249,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "Seleção Nacional",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/selecao_nacional/capa.png",
+      "image": "/servicos/catalogos/selecao_nacional/capa.webp",
       "folder": "/servicos/catalogos/selecao_nacional",
       "files": [
         {
@@ -263,7 +263,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "Tomahawk Ropes",
       "category": "Catálogos",
       "modal": "pdf",
-      "image": "/servicos/catalogos/tomahawk_ropes/capa.png",
+      "image": "/servicos/catalogos/tomahawk_ropes/capa.webp",
       "folder": "/servicos/catalogos/tomahawk_ropes",
       "files": [
         {

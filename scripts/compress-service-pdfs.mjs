@@ -4,14 +4,15 @@ import path from 'node:path'
 import process from 'node:process'
 import { execFileSync } from 'node:child_process'
 import { PDFDocument } from 'pdf-lib'
+import sharp from 'sharp'
 
 const root = process.cwd()
-const catalogRoot = path.join(root, 'public', 'servicos', 'catalogos')
+const servicesRoot = path.join(root, 'public', 'servicos')
 const popplerBin = process.env.POPPLER_BIN
   || path.join(process.env.LOCALAPPDATA || '', 'Microsoft', 'WinGet', 'Packages', 'oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe', 'poppler-25.07.0', 'Library', 'bin', 'pdftocairo.exe')
 const maxLongEdge = String(process.env.PDF_MAX_EDGE || 1800)
 const jpegQuality = String(process.env.PDF_JPEG_QUALITY || 82)
-const folders = new Set(['collection', 'tomahawk_ropes', 'american_courntry', 'selecao_nacional', 'outdoor'])
+const minCompressMb = Number(process.env.PDF_MIN_COMPRESS_MB || 0)
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -58,7 +59,8 @@ async function buildPdfFromImages(inputPath, imagePaths, outputPath, format) {
 
 async function renderPages(inputPath, tempDir, format) {
   const imagePrefix = path.join(tempDir, 'page')
-  const args = format === 'png'
+  const renderFormat = format === 'png-jpeg' ? 'png' : format
+  const args = renderFormat === 'png'
     ? ['-png', '-scale-to', maxLongEdge, inputPath, imagePrefix]
     : [
         '-jpeg',
@@ -75,10 +77,29 @@ async function renderPages(inputPath, tempDir, format) {
   return fs.readdirSync(tempDir)
     .filter((name) => {
       const lower = name.toLowerCase()
-      return format === 'png' ? lower.endsWith('.png') : lower.endsWith('.jpg') || lower.endsWith('.jpeg')
+      return renderFormat === 'png' ? lower.endsWith('.png') : lower.endsWith('.jpg') || lower.endsWith('.jpeg')
     })
     .map((name) => path.join(tempDir, name))
     .sort((a, b) => pageNumber(a) - pageNumber(b))
+}
+
+async function normalizeToJpegs(imagePaths, tempDir) {
+  const normalizedDir = path.join(tempDir, 'normalized')
+  fs.mkdirSync(normalizedDir)
+
+  return Promise.all(imagePaths.map(async (imagePath, index) => {
+    const outputPath = path.join(normalizedDir, `page-${String(index + 1).padStart(4, '0')}.jpg`)
+
+    await sharp(imagePath)
+      .flatten({ background: '#ffffff' })
+      .jpeg({
+        quality: Number(jpegQuality),
+        mozjpeg: true,
+      })
+      .toFile(outputPath)
+
+    return outputPath
+  }))
 }
 
 async function compressPdf(inputPath, format = 'jpeg') {
@@ -86,13 +107,17 @@ async function compressPdf(inputPath, format = 'jpeg') {
   const outputPath = path.join(tempDir, 'compressed.pdf')
 
   try {
-    const imagePaths = await renderPages(inputPath, tempDir, format)
+    let imagePaths = await renderPages(inputPath, tempDir, format)
 
     if (imagePaths.length === 0) {
       throw new Error('Nenhuma pagina foi renderizada.')
     }
 
-    await buildPdfFromImages(inputPath, imagePaths, outputPath, format)
+    if (format === 'png-jpeg') {
+      imagePaths = await normalizeToJpegs(imagePaths, tempDir)
+    }
+
+    await buildPdfFromImages(inputPath, imagePaths, outputPath, format === 'png' ? 'png' : 'jpeg')
     return outputPath
   } catch (error) {
     fs.rmSync(tempDir, { recursive: true, force: true })
@@ -104,24 +129,22 @@ if (!fs.existsSync(popplerBin)) {
   throw new Error(`pdftocairo nao encontrado em: ${popplerBin}`)
 }
 
-const pdfs = walk(catalogRoot).filter((filePath) => {
-  const relative = path.relative(catalogRoot, filePath)
-  const folder = relative.split(path.sep)[0]
-
-  return folders.has(folder)
-    && filePath.toLowerCase().endsWith('.pdf')
-    && !filePath.toLowerCase().endsWith('_compressed.pdf')
-})
+const pdfs = walk(servicesRoot).filter((filePath) => filePath.toLowerCase().endsWith('.pdf'))
 
 for (const pdf of pdfs) {
   const before = fs.statSync(pdf).size
+
+  if (before < minCompressMb * 1024 * 1024) {
+    continue
+  }
+
   let output
   let format = 'jpeg'
 
   try {
     output = await compressPdf(pdf, format)
   } catch (error) {
-    format = 'png'
+    format = 'png-jpeg'
     output = await compressPdf(pdf, format)
   }
 
