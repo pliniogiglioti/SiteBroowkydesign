@@ -36,6 +36,60 @@ export const serviceWorks: ServiceProject[][] = [
           "type": "pdf"
         }
       ]
+    },
+    {
+      "title": "destilus",
+      "category": "Identidade_visual",
+      "modal": "pdf",
+      "coverPdf": {
+        "name": "Manual de Marca Destilus compressed",
+        "path": "/servicos/Identidade_visual/destilus/Manual_de_Marca_Destilus_compressed.pdf",
+        "type": "pdf"
+      },
+      "folder": "/servicos/Identidade_visual/destilus",
+      "files": [
+        {
+          "name": "Manual de Marca Destilus compressed",
+          "path": "/servicos/Identidade_visual/destilus/Manual_de_Marca_Destilus_compressed.pdf",
+          "type": "pdf"
+        }
+      ]
+    },
+    {
+      "title": "pingo",
+      "category": "Identidade_visual",
+      "modal": "pdf",
+      "coverPdf": {
+        "name": "Manual de Marca Pingo compressed",
+        "path": "/servicos/Identidade_visual/pingo/Manual_de_Marca_Pingo_compressed.pdf",
+        "type": "pdf"
+      },
+      "folder": "/servicos/Identidade_visual/pingo",
+      "files": [
+        {
+          "name": "Manual de Marca Pingo compressed",
+          "path": "/servicos/Identidade_visual/pingo/Manual_de_Marca_Pingo_compressed.pdf",
+          "type": "pdf"
+        }
+      ]
+    },
+    {
+      "title": "supramax",
+      "category": "Identidade_visual",
+      "modal": "pdf",
+      "coverPdf": {
+        "name": "Manual de Marca SUPRAMAX compressed",
+        "path": "/servicos/Identidade_visual/supramax/Manual_de_Marca_SUPRAMAX_compressed.pdf",
+        "type": "pdf"
+      },
+      "folder": "/servicos/Identidade_visual/supramax",
+      "files": [
+        {
+          "name": "Manual de Marca SUPRAMAX compressed",
+          "path": "/servicos/Identidade_visual/supramax/Manual_de_Marca_SUPRAMAX_compressed.pdf",
+          "type": "pdf"
+        }
+      ]
     }
   ],
   [
