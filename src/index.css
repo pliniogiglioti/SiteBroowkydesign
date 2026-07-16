@@ -71,6 +71,28 @@
     transform: translateY(-4px);
   }
 
+  .service-carousel-card:hover {
+    transform: none;
+  }
+
+  .service-carousel-card {
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .service-carousel-card:hover {
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  }
+
+  .service-carousel-card-bg {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .service-carousel-card:hover .service-carousel-card-bg {
+    transform: scale(1.045);
+    filter: saturate(1.06) contrast(1.03);
+  }
+
   .btn-primary {
     @apply bg-[#5700ef] text-white px-6 py-3 rounded-full font-dm font-medium text-sm transition-all duration-300;
   }

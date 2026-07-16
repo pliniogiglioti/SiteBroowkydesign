@@ -1,0 +1,5 @@
+
+tipo=Catálogos
+nome=Boots Horse
+modal=pdf para escolha
+modal=pdf

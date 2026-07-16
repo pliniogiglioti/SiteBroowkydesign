@@ -1,0 +1,5 @@
+
+tipo=Catálogos
+nome=American Country
+modal=pdf para escolha
+modal=pdf

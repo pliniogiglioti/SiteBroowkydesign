@@ -2,15 +2,27 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 const tools = [
-  { name: 'Figma',        color: '#F24E1E', icon: 'Fg' },
-  { name: 'Photoshop',    color: '#31A8FF', icon: 'Ps' },
-  { name: 'Illustrator',  color: '#FF9A00', icon: 'Ai' },
-  { name: 'InDesign',     color: '#FF3366', icon: 'Id' },
-  { name: 'Dimension',    color: '#00C8FF', icon: 'Ds' },
-  { name: 'Lightroom',    color: '#31A8FF', icon: 'Lr' },
-  { name: 'Premiere Pro', color: '#9999FF', icon: 'Pr' },
-  { name: 'After Effects',color: '#9999FF', icon: 'Ae' },
+  { name: 'Figma',        color: '#ffffff', icon: 'Figma', background: '#171717' },
+  { name: 'Photoshop',    color: '#31A8FF', icon: 'Ps',    background: '#00253D' },
+  { name: 'Illustrator',  color: '#FF9A00', icon: 'Ai',    background: '#351313' },
+  { name: 'InDesign',     color: '#FF3366', icon: 'Id',    background: '#45001F' },
+  { name: 'Dimension',    color: '#99E83F', icon: 'Ds',    background: '#173700' },
+  { name: 'Lightroom',    color: '#31A8FF', icon: 'Lr',    background: '#00253D' },
+  { name: 'Premiere Pro', color: '#9999FF', icon: 'Pr',    background: '#0C0064' },
+  { name: 'After Effects',color: '#9999FF', icon: 'Ae',    background: '#0C0064' },
 ]
+
+function FigmaIcon() {
+  return (
+    <div className="grid grid-cols-2 w-[40px] h-[60px] md:w-[44px] md:h-[66px]" aria-hidden="true">
+      <span className="bg-[#F24E1E] rounded-l-full" />
+      <span className="bg-[#FF7262] rounded-r-full" />
+      <span className="bg-[#A259FF] rounded-l-full" />
+      <span className="bg-[#1ABCFE] rounded-full" />
+      <span className="bg-[#0ACF83] rounded-l-full rounded-br-full" />
+    </div>
+  )
+}
 
 export default function About() {
   const ref = useRef(null)
@@ -51,28 +63,36 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="glass-card rounded-[8px] p-6 md:p-12 flex justify-center"
+            className="relative overflow-hidden rounded-[32px] md:rounded-[44px] p-7 md:p-11 flex justify-center bg-white/[0.025] border border-white/[0.12] backdrop-blur-[24px] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_55px_rgba(0,0,0,0.28)]"
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-x-8 md:gap-y-8">
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/[0.045] via-transparent to-black/20" />
+            <div className="relative grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
               {tools.map((tool, i) => (
                 <motion.div
                   key={tool.name}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                  className="w-[80px] h-[80px] md:w-[104px] md:h-[104px] rounded-[8px] flex items-center justify-center cursor-default"
+                  className="w-[84px] h-[84px] md:w-[100px] md:h-[100px] rounded-[9px] flex items-center justify-center cursor-default"
                   title={tool.name}
                   style={{
-                    backgroundColor: tool.color + '22',
-                    border: `1px solid ${tool.color}44`,
+                    backgroundColor: tool.background,
+                    border: '1px solid rgba(255,255,255,0.018)',
                   }}
                 >
-                  <span
-                    className="font-geist font-bold text-2xl md:text-4xl"
-                    style={{ color: tool.color }}
-                  >
-                    {tool.icon}
-                  </span>
+                  {tool.icon === 'Figma' ? (
+                    <FigmaIcon />
+                  ) : (
+                    <span
+                      className="font-bold text-[38px] md:text-[46px] tracking-[-0.075em] leading-none"
+                      style={{
+                        color: tool.color,
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                      }}
+                    >
+                      {tool.icon}
+                    </span>
+                  )}
                 </motion.div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import Ticker from './Ticker'
 import { InstagramIcon, LinkedinIcon, WhatsAppIcon } from './SocialIcons'
@@ -18,14 +18,22 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  // GABRIEL moves left (-300px)
-  const gabrielX = useTransform(scrollYProgress, [0, 1], [0, -300])
+  // Amortece a leitura da rolagem para o parallax acompanhar o mouse sem trancos.
+  const smoothScrollProgress = useSpring(scrollYProgress, {
+    stiffness: 75,
+    damping: 24,
+    mass: 0.35,
+    restDelta: 0.001,
+  })
+
+  // Começa a responder imediatamente à rolagem, com distância de saída reduzida.
+  const gabrielX = useTransform(smoothScrollProgress, [0, 1], [0, -150])
   
   // TEIXEIRA moves right (+300px)
-  const teixeiraX = useTransform(scrollYProgress, [0, 1], [0, 300])
+  const teixeiraX = useTransform(smoothScrollProgress, [0, 1], [0, 150])
   
   // Image zooms in (scale 1 → 1.3) — zoom mais forte
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.3])
+  const imageScale = useTransform(smoothScrollProgress, [0, 1], [1, 1.14])
 
   return (
     <section ref={ref} id="hero" className="relative h-screen flex flex-col overflow-hidden bg-[#0c0b0b]">
@@ -37,7 +45,7 @@ export default function Hero() {
       <div className="flex-1 relative overflow-hidden">
 
         {/* Text — z:1 (behind image) — dentro do container 1520px */}
-        <div className="absolute top-[80px] md:top-[120px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
+        <div className="absolute top-[110px] md:top-[150px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
           <div className="w-full max-w-[1520px] px-5 md:px-10">
             {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
             <motion.h1

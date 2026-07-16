@@ -1,0 +1,4 @@
+tipo=Catálogos
+nome=Seleção Nacional
+modal=pdf para escolha
+modal=pdf

@@ -1,6 +1,17 @@
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef, type PointerEvent, type WheelEvent } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Plus, Minus } from 'lucide-react'
+import { FileText, Plus, Minus, ArrowLeft, ArrowRight, X, ArrowUpRight } from 'lucide-react'
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
+import type { PDFDocumentLoadingTask, RenderTask } from 'pdfjs-dist'
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+import { serviceWorks, type ProjectFile } from '../data/serviceProjects'
+
+GlobalWorkerOptions.workerSrc = pdfWorker
+
+const pdfDocumentOptions = (path: string) => ({
+  url: path,
+  wasmUrl: '/pdfjs/wasm/',
+})
 
 const services = [
   {
@@ -29,10 +40,516 @@ const services = [
   },
 ]
 
+function PdfPreview({ file }: { file: ProjectFile }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [status, setStatus] = useState('Carregando PDF...')
+
+  useEffect(() => {
+    let cancelled = false
+    let renderTask: RenderTask | null = null
+    let loadingTask: PDFDocumentLoadingTask | null = null
+    const container = containerRef.current
+
+    if (!container) return
+
+    container.innerHTML = ''
+    setStatus('Carregando PDF...')
+
+    const renderPdf = async () => {
+      try {
+        loadingTask = getDocument(pdfDocumentOptions(file.path))
+        const pdf = await loadingTask.promise
+
+        if (cancelled) return
+
+        setStatus('')
+        const firstPage = await pdf.getPage(1)
+        const firstViewport = firstPage.getViewport({ scale: 1 })
+        const isVerticalPdf = firstViewport.height >= firstViewport.width
+        const pageGap = 16
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+          const spreadWrapper = document.createElement('div')
+          spreadWrapper.className = isVerticalPdf
+            ? 'mb-4 grid grid-cols-2 gap-4 last:mb-0'
+            : 'mb-4 flex justify-center last:mb-0'
+          container.appendChild(spreadWrapper)
+
+          const pagesInRow = isVerticalPdf && pageNumber < pdf.numPages
+            ? [pageNumber, pageNumber + 1]
+            : [pageNumber]
+
+          if (isVerticalPdf && pageNumber < pdf.numPages) {
+            pageNumber += 1
+          }
+
+          for (const spreadPageNumber of pagesInRow) {
+            const page = await pdf.getPage(spreadPageNumber)
+
+            if (cancelled) return
+
+            const baseViewport = page.getViewport({ scale: 1 })
+            const containerWidth = container.clientWidth || 900
+            const availableWidth = isVerticalPdf
+              ? (containerWidth - pageGap) / 2
+              : containerWidth
+            const scale = Math.min(availableWidth / baseViewport.width, 1.65)
+            const viewport = page.getViewport({ scale })
+            const outputScale = window.devicePixelRatio || 1
+            const canvas = document.createElement('canvas')
+            const context = canvas.getContext('2d')
+
+            if (!context) continue
+
+            canvas.width = Math.floor(viewport.width * outputScale)
+            canvas.height = Math.floor(viewport.height * outputScale)
+            canvas.style.width = `${viewport.width}px`
+            canvas.style.height = `${viewport.height}px`
+            canvas.className = 'max-w-full rounded-xl bg-white'
+
+            const pageWrapper = document.createElement('div')
+            pageWrapper.className = 'flex justify-center'
+            pageWrapper.appendChild(canvas)
+            spreadWrapper.appendChild(pageWrapper)
+
+            renderTask = page.render({
+              canvas,
+              canvasContext: context,
+              viewport,
+              transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : undefined,
+            })
+
+            await renderTask.promise
+            renderTask = null
+          }
+        }
+      } catch (error) {
+        if (!cancelled) {
+          if (error instanceof Error && error.name === 'RenderingCancelledException') return
+          setStatus('Nao foi possivel exibir este PDF no modal.')
+        }
+      }
+    }
+
+    renderPdf()
+
+    return () => {
+      cancelled = true
+      renderTask?.cancel()
+      loadingTask?.destroy()
+      container.innerHTML = ''
+    }
+  }, [file.path])
+
+  return (
+    <div className="sm:col-span-2 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+      <div className="h-[78vh] min-h-[520px] overflow-y-auto px-4 py-4">
+        {status && (
+          <div className="flex h-full items-center justify-center text-center">
+            <span className="font-dm text-sm text-white/40">{status}</span>
+          </div>
+        )}
+        <div ref={containerRef} />
+      </div>
+    </div>
+  )
+}
+
+function PdfCover({ file, fit = 'cover' }: { file: ProjectFile; fit?: 'cover' | 'contain' }) {
+  const frameRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [loaded, setLoaded] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    if (file.cover) return
+
+    let cancelled = false
+    let renderTask: RenderTask | null = null
+    let loadingTask: PDFDocumentLoadingTask | null = null
+    const frame = frameRef.current
+    const canvas = canvasRef.current
+
+    if (!frame || !canvas) return
+
+    setLoaded(false)
+    setFailed(false)
+
+    const renderCover = async () => {
+      try {
+        loadingTask = getDocument(pdfDocumentOptions(file.path))
+        const pdf = await loadingTask.promise
+        const page = await pdf.getPage(1)
+
+        if (cancelled) return
+
+        const baseViewport = page.getViewport({ scale: 1 })
+        const frameWidth = frame.clientWidth || 320
+        const frameHeight = frame.clientHeight || 420
+          const fitScale = fit === 'contain'
+            ? Math.min(frameWidth / baseViewport.width, frameHeight / baseViewport.height)
+            : Math.max(frameWidth / baseViewport.width, frameHeight / baseViewport.height)
+          const scale = fit === 'contain' ? fitScale : fitScale * 1.08
+        const viewport = page.getViewport({ scale })
+        const outputScale = window.devicePixelRatio || 1
+        const context = canvas.getContext('2d')
+
+        if (!context) return
+
+        canvas.width = Math.floor(viewport.width * outputScale)
+        canvas.height = Math.floor(viewport.height * outputScale)
+        canvas.style.width = `${viewport.width}px`
+        canvas.style.height = `${viewport.height}px`
+        canvas.style.left = `${(frameWidth - viewport.width) / 2}px`
+        canvas.style.top = `${(frameHeight - viewport.height) / 2}px`
+        context.save()
+        context.fillStyle = '#ffffff'
+        context.fillRect(0, 0, canvas.width, canvas.height)
+        context.restore()
+
+        renderTask = page.render({
+          canvas,
+          canvasContext: context,
+          viewport,
+          transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : undefined,
+        })
+
+        await renderTask.promise
+        renderTask = null
+
+        if (!cancelled) {
+          setFailed(false)
+          setLoaded(true)
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name === 'RenderingCancelledException') return
+
+        if (!cancelled) {
+          setFailed(true)
+          setLoaded(false)
+        }
+      }
+    }
+
+    renderCover()
+
+    return () => {
+      cancelled = true
+      renderTask?.cancel()
+      loadingTask?.destroy()
+    }
+  }, [file.path, fit])
+
+  if (file.cover) {
+    return (
+      <img
+        src={file.cover}
+        alt=""
+        loading="lazy"
+        className={`absolute inset-0 h-full w-full transition-transform duration-300 group-hover/pdf:scale-[1.02] ${
+          fit === 'contain' ? 'object-contain' : 'object-cover'
+        }`}
+      />
+    )
+  }
+
+  return (
+    <div ref={frameRef} className="absolute inset-0 overflow-hidden bg-[#111]">
+      {!loaded && !failed && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/5">
+          <span className="font-dm text-xs text-white/35">Carregando</span>
+        </div>
+      )}
+      {failed && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/5 text-white/45">
+          <FileText size={28} strokeWidth={1.5} />
+          <span className="font-dm text-xs uppercase tracking-[0.16em]">PDF</span>
+        </div>
+      )}
+      <canvas
+        ref={canvasRef}
+        className={`absolute transition-transform duration-300 group-hover/pdf:scale-[1.02] ${
+          failed || !loaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        aria-label="Capa do PDF"
+      />
+    </div>
+  )
+}
+
+function PdfChoiceCard({ file, onSelect }: { file: ProjectFile; onSelect: () => void }) {
+  const [orientation, setOrientation] = useState<'vertical' | 'horizontal'>('vertical')
+
+  useEffect(() => {
+    if (file.cover) return
+
+    let cancelled = false
+    const loadingTask = getDocument(pdfDocumentOptions(file.path))
+
+    const detectOrientation = async () => {
+      try {
+        const pdf = await loadingTask.promise
+        const page = await pdf.getPage(1)
+        const viewport = page.getViewport({ scale: 1 })
+
+        if (!cancelled) {
+          setOrientation(viewport.width > viewport.height ? 'horizontal' : 'vertical')
+        }
+      } catch {
+        if (!cancelled) setOrientation('vertical')
+      }
+    }
+
+    detectOrientation()
+
+    return () => {
+      cancelled = true
+      loadingTask.destroy()
+    }
+  }, [file.cover, file.path])
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={`glass-card rounded-xl overflow-hidden relative text-left group/pdf ${
+        orientation === 'horizontal' ? 'aspect-[842/595]' : 'aspect-[3/4]'
+      }`}
+    >
+      <PdfCover file={file} fit={orientation === 'horizontal' ? 'contain' : 'cover'} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover/pdf:opacity-100 transition-opacity" />
+      <div className="absolute right-4 top-4 w-9 h-9 rounded-full glass flex items-center justify-center text-white/70 opacity-0 group-hover/pdf:opacity-100 transition-opacity">
+        <FileText size={17} strokeWidth={1.7} />
+      </div>
+    </button>
+  )
+}
+
 export default function Services() {
   const [openIndex, setOpenIndex] = useState<number>(0)
+  const [selectedProject, setSelectedProject] = useState<{ serviceIndex: number; workIndex: number } | null>(null)
+  const [selectedPdf, setSelectedPdf] = useState<ProjectFile | null>(null)
+  const carouselRefs = useRef<Array<HTMLDivElement | null>>([])
+  const carouselState = useRef<Array<{
+    current: number
+    target: number
+    raf: number | null
+    isDragging: boolean
+    isTouching: boolean
+    gestureLocked: 'horizontal' | 'vertical' | null
+    startX: number
+    startY: number
+    startTarget: number
+    dragDelta: number
+    didDrag: boolean
+    suppressClickUntil: number
+  }>>([])
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const modalService = selectedProject ? services[selectedProject.serviceIndex] : null
+  const modalWork = selectedProject
+    ? serviceWorks[selectedProject.serviceIndex][selectedProject.workIndex]
+    : null
+  const modalFiles = modalWork
+    ? modalWork.files.filter((file) => {
+        if (modalWork.modal === 'pdf') return file.type === 'pdf'
+        if (modalWork.modal === 'image') return file.type === 'image'
+        return true
+      })
+    : []
+  const relatedWorks = selectedProject
+    ? serviceWorks[selectedProject.serviceIndex].filter((_, index) => index !== selectedProject.workIndex)
+    : []
+
+  const getCarouselState = (serviceIndex: number) => {
+    if (!carouselState.current[serviceIndex]) {
+      carouselState.current[serviceIndex] = {
+        current: 0,
+        target: 0,
+        raf: null,
+        isDragging: false,
+        isTouching: false,
+        gestureLocked: null,
+        startX: 0,
+        startY: 0,
+        startTarget: 0,
+        dragDelta: 0,
+        didDrag: false,
+        suppressClickUntil: 0,
+      }
+    }
+
+    return carouselState.current[serviceIndex]
+  }
+
+  const getMaxCarouselScroll = (carousel: HTMLDivElement) =>
+    Math.max(carousel.scrollWidth - carousel.clientWidth, 0)
+
+  const animateCarousel = (serviceIndex: number) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    state.current += (state.target - state.current) * 0.12
+
+    if (Math.abs(state.target - state.current) < 0.45) {
+      state.current = state.target
+      carousel.scrollLeft = state.current
+      state.raf = null
+      return
+    }
+
+    carousel.scrollLeft = state.current
+    state.raf = window.requestAnimationFrame(() => animateCarousel(serviceIndex))
+  }
+
+  const setCarouselTarget = (serviceIndex: number, target: number) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    state.target = Math.min(Math.max(target, 0), getMaxCarouselScroll(carousel))
+
+    if (state.raf === null) {
+      state.current = carousel.scrollLeft
+      state.raf = window.requestAnimationFrame(() => animateCarousel(serviceIndex))
+    }
+  }
+
+  const scrollWorks = (serviceIndex: number, direction: -1 | 1) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    setCarouselTarget(serviceIndex, state.target + direction * carousel.clientWidth * 0.86)
+  }
+
+  const handleCarouselWheel = (serviceIndex: number, event: WheelEvent<HTMLDivElement>) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+
+    if (Math.abs(delta) < 1) return
+
+    event.preventDefault()
+    setCarouselTarget(serviceIndex, state.target + delta * 1.18)
+  }
+
+  const handleCarouselPointerDown = (serviceIndex: number, event: PointerEvent<HTMLDivElement>) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    if (state.raf !== null) {
+      window.cancelAnimationFrame(state.raf)
+      state.raf = null
+    }
+
+    state.isDragging = true
+    state.isTouching = event.pointerType === 'touch'
+    state.gestureLocked = null
+    state.didDrag = false
+    state.startX = event.clientX
+    state.startY = event.clientY
+    state.startTarget = carousel.scrollLeft
+    state.dragDelta = 0
+    state.current = carousel.scrollLeft
+    state.target = carousel.scrollLeft
+  }
+
+  const handleCarouselPointerMove = (serviceIndex: number, event: PointerEvent<HTMLDivElement>) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel || !state.isDragging) return
+
+    const nextTarget = state.startTarget - (event.clientX - state.startX)
+    const deltaX = event.clientX - state.startX
+    const deltaY = event.clientY - state.startY
+
+    if (!state.gestureLocked) {
+      if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return
+      state.gestureLocked = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical'
+    }
+
+    if (state.gestureLocked === 'vertical') return
+
+    if (event.cancelable) event.preventDefault()
+    state.didDrag = Math.abs(deltaX) > 6
+    state.target = Math.min(Math.max(nextTarget, 0), getMaxCarouselScroll(carousel))
+    state.dragDelta = state.target - state.startTarget
+    state.current = state.target
+    carousel.scrollLeft = state.current
+  }
+
+  const handleCarouselPointerUp = (serviceIndex: number) => {
+    const carousel = carouselRefs.current[serviceIndex]
+    const state = getCarouselState(serviceIndex)
+
+    if (!carousel) return
+
+    if (state.didDrag) {
+      state.suppressClickUntil = Date.now() + 220
+      const afterMove = Math.max(-72, Math.min(72, state.dragDelta * 0.18))
+
+      if (Math.abs(afterMove) > 2) {
+        setCarouselTarget(serviceIndex, state.target + afterMove)
+      }
+    }
+
+    state.isDragging = false
+    state.isTouching = false
+    state.gestureLocked = null
+    state.dragDelta = 0
+    state.didDrag = false
+
+  }
+
+  const openProject = (serviceIndex: number, workIndex: number) => {
+    const state = getCarouselState(serviceIndex)
+    const project = serviceWorks[serviceIndex]?.[workIndex]
+
+    if (!project || Date.now() < state.suppressClickUntil || state.didDrag) return
+
+    setSelectedPdf(serviceIndex === 2 ? project.files.find((file) => file.type === 'pdf') ?? null : null)
+    setSelectedProject({ serviceIndex, workIndex })
+  }
+
+  const renderProjectFile = (file: ProjectFile) => {
+    if (file.type === 'pdf') {
+      return <PdfPreview key={file.path} file={file} />
+    }
+
+    if (file.type === 'image') {
+      return (
+        <img
+          key={file.path}
+          src={file.path}
+          alt={file.name}
+          className="aspect-[4/3] w-full rounded-2xl border border-white/10 object-cover"
+        />
+      )
+    }
+
+    return (
+      <a
+        key={file.path}
+        href={file.path}
+        target="_blank"
+        rel="noreferrer"
+        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 font-dm text-sm text-white/60 hover:text-white transition-colors"
+      >
+        {file.name}
+      </a>
+    )
+  }
 
   return (
     <section id="services" ref={ref} className="py-12 md:py-20 bg-[#0c0b0b] relative overflow-hidden">
@@ -141,10 +658,92 @@ export default function Services() {
                           {service.description}
                         </p>
 
-                        {/* Image placeholders */}
-                        <div className="grid grid-cols-2 gap-3 pb-6">
-                          <div className="aspect-[4/3] rounded-xl bg-white/5 border border-white/6" />
-                          <div className="aspect-[4/3] rounded-xl bg-white/5 border border-white/6" />
+                        <div className="flex items-center gap-2 sm:gap-3 pb-6">
+                          <button
+                            type="button"
+                            onClick={() => scrollWorks(i, -1)}
+                            aria-label="Ver trabalhos anteriores"
+                            className="w-7 h-10 flex items-center justify-center text-white/35 hover:text-white transition-colors shrink-0"
+                          >
+                            <ArrowLeft size={17} strokeWidth={1.6} />
+                          </button>
+
+                          <div className="flex-1 min-w-0 overflow-hidden">
+                            {serviceWorks[i].length > 0 ? (
+                              <div
+                                ref={(node) => {
+                                  carouselRefs.current[i] = node
+                                }}
+                                onWheel={(event) => handleCarouselWheel(i, event)}
+                                onPointerDown={(event) => handleCarouselPointerDown(i, event)}
+                                onPointerMove={(event) => handleCarouselPointerMove(i, event)}
+                                onPointerUp={() => handleCarouselPointerUp(i)}
+                                onPointerCancel={() => handleCarouselPointerUp(i)}
+                                className="-mx-1.5 flex cursor-grab gap-0 overflow-x-auto pb-1 touch-pan-y select-none active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                              >
+                                {serviceWorks[i].map((work, workIndex) => (
+                                  <div
+                                    key={`${service.number}-${work.title}-${work.category}`}
+                                    className="w-1/2 min-w-[50%] shrink-0 px-1.5"
+                                  >
+                                    <button
+                                      type="button"
+                                      aria-label={`Abrir ${work.title}`}
+                                      onClick={(event) => {
+                                        event.stopPropagation()
+                                        openProject(i, workIndex)
+                                      }}
+                                      className={`service-carousel-card glass-card w-full rounded-xl p-4 flex flex-col justify-end overflow-hidden relative bg-[#111] text-left group/project ${
+                                        i === 2 ? 'aspect-[16/9]' : 'aspect-[4/3]'
+                                      }`}
+                                    >
+                                      {work.coverPdf ? (
+                                        <div className="service-carousel-card-bg absolute inset-0 z-0">
+                                          <PdfCover file={work.coverPdf} fit={i === 2 ? 'contain' : 'cover'} />
+                                        </div>
+                                      ) : (
+                                        <div
+                                          className={`service-carousel-card-bg absolute inset-0 z-0 bg-center ${
+                                            i === 2 ? 'bg-contain bg-no-repeat' : 'bg-cover'
+                                          }`}
+                                          style={{ backgroundImage: `url(${work.image})` }}
+                                        />
+                                      )}
+                                      {i !== 2 && (
+                                        <>
+                                          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none transition-opacity duration-300 group-hover/project:opacity-90" />
+                                          <div className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full glass flex items-center justify-center text-white/60 opacity-0 transition-all duration-300 group-hover/project:opacity-100 group-hover/project:text-white">
+                                            <ArrowUpRight size={14} />
+                                          </div>
+                                          <span className="relative z-20 font-dm text-[11px] uppercase tracking-[0.16em] text-white/55 transition-colors duration-300 group-hover/project:text-white/70">
+                                            {work.category}
+                                          </span>
+                                          <strong className="relative z-20 font-geist text-sm text-white mt-1 leading-tight transition-transform duration-300 group-hover/project:translate-x-1">
+                                            {work.title}
+                                          </strong>
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="glass-card aspect-[4/3] rounded-xl flex items-center justify-center px-5 text-center">
+                                <span className="font-dm text-sm text-white/35">
+                                  Adicione subpastas com capa.png e config.txt em public/servicos para criar cards.
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => scrollWorks(i, 1)}
+                            aria-label="Ver mais trabalhos"
+                            className="w-7 h-10 flex items-center justify-center text-white/35 hover:text-white transition-colors shrink-0"
+                          >
+                            <ArrowRight size={17} strokeWidth={1.6} />
+                          </button>
                         </div>
                       </motion.div>
                     )}
@@ -155,6 +754,175 @@ export default function Services() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {modalService && modalWork && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-[80] bg-[#0c0b0b]/70 backdrop-blur-sm px-0 py-6 md:py-8 overflow-hidden"
+            onClick={() => {
+              setSelectedPdf(null)
+              setSelectedProject(null)
+            }}
+          >
+            <div className="max-w-[1520px] mx-auto px-5 md:px-10 h-full flex items-center">
+              <motion.div
+                initial={{ y: 18, opacity: 0, scale: 0.98 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={{ y: 18, opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.24, ease: 'easeOut' }}
+                onClick={(event) => event.stopPropagation()}
+                className="w-full max-h-full relative overflow-hidden"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.10)',
+                  borderRadius: '30px',
+                }}
+              >
+                <div className="absolute top-0 right-0 w-[360px] h-[260px] bg-[#5700ef]/18 blur-[100px] pointer-events-none" />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedPdf(null)
+                    setSelectedProject(null)
+                  }}
+                  aria-label="Fechar modal"
+                  className="absolute top-7 right-7 md:top-9 md:right-9 z-40 w-10 h-10 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                >
+                  <X size={16} />
+                </button>
+
+                {modalWork.modal === 'pdf' ? (
+                  <div className="relative z-10 max-h-[calc(100vh-4rem)] overflow-hidden p-4 md:p-6">
+                    {selectedPdf ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (selectedProject?.serviceIndex === 2) {
+                              setSelectedPdf(null)
+                              setSelectedProject(null)
+                              return
+                            }
+
+                            setSelectedPdf(null)
+                          }}
+                          aria-label="Voltar para a lista de PDFs"
+                          className="absolute left-7 top-7 md:left-9 md:top-9 z-40 w-10 h-10 rounded-full flex items-center justify-center text-white/65 hover:text-white transition-colors"
+                          style={{
+                            background: 'rgba(12, 11, 11, 0.48)',
+                            backdropFilter: 'blur(18px)',
+                            WebkitBackdropFilter: 'blur(18px)',
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                          }}
+                        >
+                          <ArrowLeft size={18} strokeWidth={1.7} />
+                        </button>
+                      <div className="grid grid-cols-1 gap-4 pt-0">
+                        <PdfPreview file={selectedPdf} />
+                      </div>
+                      </>
+                    ) : (
+                      <div className="flex max-h-[calc(100vh-7rem)] min-h-[70vh] flex-col gap-8 overflow-y-auto pr-1">
+                        <div className="max-w-3xl">
+                          <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
+                            {modalService.number}. {modalService.title}
+                          </span>
+                          <h3 className="section-title text-[clamp(2rem,5vw,4.2rem)] text-white mt-4 leading-none">
+                            {modalWork.title}
+                          </h3>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {modalFiles.length > 0 ? (
+                            modalFiles.map((file) => (
+                              <PdfChoiceCard
+                                key={file.path}
+                                file={file}
+                                onSelect={() => setSelectedPdf(file)}
+                              />
+                            ))
+                          ) : (
+                            <div className="glass-card rounded-xl px-5 py-8">
+                              <span className="font-dm text-sm text-white/40">
+                                Adicione PDFs nesta pasta para exibir as opcoes.
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="relative z-10 grid max-h-[calc(100vh-4rem)] grid-cols-1 lg:grid-cols-[0.82fr_1.18fr] gap-8 md:gap-12 overflow-y-auto p-6 md:p-10 lg:p-12">
+                    <div className="flex flex-col justify-between gap-8 lg:sticky lg:top-0 lg:self-start">
+                      <div>
+                        <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
+                          {modalService.number}. {modalService.title}
+                        </span>
+                        <h3 className="section-title text-[clamp(2rem,5vw,4.2rem)] text-white mt-4 leading-none">
+                          {modalWork.title}
+                        </h3>
+                        <p className="font-dm text-[16px] text-white/55 leading-relaxed max-w-xl mt-6">
+                          Projeto de {modalWork.category.toLowerCase()} criado para apresentar a direcao visual,
+                          organizar aplicacoes e transformar a ideia em uma experiencia clara, consistente e memoravel.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3 max-w-xl">
+                        {['Conceito', modalWork.category, 'Aplicacoes'].map((item) => (
+                          <div key={item} className="border-t border-white/12 pt-3">
+                            <span className="font-dm text-xs text-white/35 uppercase tracking-[0.14em]">
+                              {item}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {modalFiles.length > 0
+                        ? modalFiles.map(renderProjectFile)
+                        : relatedWorks.slice(0, 2).map((work) => (
+                            <div
+                              key={work.title}
+                              className="aspect-[4/3] rounded-2xl overflow-hidden relative border border-white/10 bg-cover bg-center"
+                              style={{ backgroundImage: `url(${work.image})` }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                              <div className="absolute left-4 bottom-4 right-4">
+                                <span className="font-dm text-[10px] uppercase tracking-[0.16em] text-white/50">
+                                  {work.category}
+                                </span>
+                                <p className="font-geist font-bold text-white text-sm mt-1">
+                                  {work.title}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+
+                      <a
+                        href="#projects"
+                        onClick={() => setSelectedProject(null)}
+                        className="sm:col-span-2 font-dm text-sm text-white/60 hover:text-white transition-colors flex items-center justify-end gap-1.5"
+                      >
+                        Ver projetos relacionados
+                        <ArrowUpRight size={14} />
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

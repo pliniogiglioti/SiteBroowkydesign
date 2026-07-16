@@ -1,0 +1,4 @@
+tipo=Catálogos
+nome=Tomahawk Collection
+modal=pdf para escolha
+modal=pdf
