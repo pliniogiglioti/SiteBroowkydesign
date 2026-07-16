@@ -24,15 +24,15 @@ export const serviceWorks: ServiceProject[][] = [
       "category": "Identidade_visual",
       "modal": "pdf",
       "coverPdf": {
-        "name": "pdf 01",
-        "path": "/servicos/Identidade_visual/data_logistica/pdf_01.pdf",
+        "name": "Manual de identidade Visual Data Logística compressed",
+        "path": "/servicos/Identidade_visual/data_logistica/Manual_de_identidade_Visual_Data_Logística_compressed.pdf",
         "type": "pdf"
       },
       "folder": "/servicos/Identidade_visual/data_logistica",
       "files": [
         {
-          "name": "pdf 01",
-          "path": "/servicos/Identidade_visual/data_logistica/pdf_01.pdf",
+          "name": "Manual de identidade Visual Data Logística compressed",
+          "path": "/servicos/Identidade_visual/data_logistica/Manual_de_identidade_Visual_Data_Logística_compressed.pdf",
           "type": "pdf"
         }
       ]
@@ -41,11 +41,7 @@ export const serviceWorks: ServiceProject[][] = [
       "title": "destilus",
       "category": "Identidade_visual",
       "modal": "pdf",
-      "coverPdf": {
-        "name": "Manual de Marca Destilus compressed",
-        "path": "/servicos/Identidade_visual/destilus/Manual_de_Marca_Destilus_compressed.pdf",
-        "type": "pdf"
-      },
+      "image": "/servicos/Identidade_visual/destilus/Capa.jpg",
       "folder": "/servicos/Identidade_visual/destilus",
       "files": [
         {
@@ -101,48 +97,48 @@ export const serviceWorks: ServiceProject[][] = [
       "folder": "/servicos/catalogos/boots_horse",
       "files": [
         {
-          "name": "pdf 01",
-          "path": "/servicos/catalogos/boots_horse/pdf_01.pdf",
+          "name": "pdf 01 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_01_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 02",
-          "path": "/servicos/catalogos/boots_horse/pdf_02.pdf",
+          "name": "pdf 02 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_02_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 03",
-          "path": "/servicos/catalogos/boots_horse/pdf_03.pdf",
+          "name": "pdf 03 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_03_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 04",
-          "path": "/servicos/catalogos/boots_horse/pdf_04.pdf",
+          "name": "pdf 04 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_04_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 05",
-          "path": "/servicos/catalogos/boots_horse/pdf_05.pdf",
+          "name": "pdf 05 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_05_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 06",
-          "path": "/servicos/catalogos/boots_horse/pdf_06.pdf",
+          "name": "pdf 06 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_06_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 07",
-          "path": "/servicos/catalogos/boots_horse/pdf_07.pdf",
+          "name": "pdf 07 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_07_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 08",
-          "path": "/servicos/catalogos/boots_horse/pdf_08.pdf",
+          "name": "pdf 08 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_08_compressed.pdf",
           "type": "pdf"
         },
         {
-          "name": "pdf 09",
-          "path": "/servicos/catalogos/boots_horse/pdf_09.pdf",
+          "name": "pdf 09 compressed",
+          "path": "/servicos/catalogos/boots_horse/pdf_09_compressed.pdf",
           "type": "pdf"
         }
       ]
