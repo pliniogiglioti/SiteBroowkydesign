@@ -71,7 +71,7 @@ function PdfPreview({ file }: { file: ProjectFile }) {
         for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
           const spreadWrapper = document.createElement('div')
           spreadWrapper.className = isVerticalPdf
-            ? 'mb-4 grid grid-cols-2 gap-4 last:mb-0'
+            ? 'mb-4 grid grid-cols-1 gap-4 last:mb-0 sm:grid-cols-2'
             : 'mb-4 flex justify-center last:mb-0'
           container.appendChild(spreadWrapper)
 
@@ -142,8 +142,8 @@ function PdfPreview({ file }: { file: ProjectFile }) {
   }, [file.path])
 
   return (
-    <div className="sm:col-span-2 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-      <div className="h-[78vh] min-h-[520px] overflow-y-auto px-4 py-4">
+    <div className="h-full sm:col-span-2 overflow-hidden rounded-none border-0 bg-black/20 md:rounded-2xl md:border md:border-white/10">
+      <div className="h-full min-h-0 overflow-y-auto px-2 pb-4 pt-16 md:h-[78vh] md:min-h-[520px] md:px-4 md:py-4">
         {status && (
           <div className="flex h-full items-center justify-center text-center">
             <span className="font-dm text-sm text-white/40">{status}</span>
@@ -762,26 +762,25 @@ export default function Services() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="fixed inset-0 z-[80] bg-[#0c0b0b]/70 backdrop-blur-sm px-0 py-6 md:py-8 overflow-hidden"
+            className="fixed inset-0 z-[80] bg-[#0c0b0b]/70 backdrop-blur-sm overflow-hidden md:py-8"
             onClick={() => {
               setSelectedPdf(null)
               setSelectedProject(null)
             }}
           >
-            <div className="max-w-[1520px] mx-auto px-5 md:px-10 h-full flex items-center">
+            <div className="mx-auto flex h-full max-w-[1520px] items-center px-0 md:px-10">
               <motion.div
                 initial={{ y: 18, opacity: 0, scale: 0.98 }}
                 animate={{ y: 0, opacity: 1, scale: 1 }}
                 exit={{ y: 18, opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.24, ease: 'easeOut' }}
                 onClick={(event) => event.stopPropagation()}
-                className="w-full max-h-full relative overflow-hidden"
+                className="relative h-full w-full overflow-hidden rounded-none md:h-auto md:max-h-full md:rounded-[30px]"
                 style={{
                   background: 'rgba(255, 255, 255, 0.06)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
                   border: '1px solid rgba(255, 255, 255, 0.10)',
-                  borderRadius: '30px',
                 }}
               >
                 <div className="absolute top-0 right-0 w-[360px] h-[260px] bg-[#5700ef]/18 blur-[100px] pointer-events-none" />
@@ -793,13 +792,13 @@ export default function Services() {
                     setSelectedProject(null)
                   }}
                   aria-label="Fechar modal"
-                  className="absolute top-7 right-7 md:top-9 md:right-9 z-40 w-10 h-10 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                  className="absolute right-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full glass text-white/75 transition-colors hover:text-white md:right-9 md:top-9 md:h-10 md:w-10"
                 >
                   <X size={16} />
                 </button>
 
                 {modalWork.modal === 'pdf' ? (
-                  <div className="relative z-10 max-h-[calc(100vh-4rem)] overflow-hidden p-4 md:p-6">
+                  <div className="relative z-10 h-full overflow-hidden p-0 md:h-auto md:max-h-[calc(100vh-4rem)] md:p-6">
                     {selectedPdf ? (
                       <>
                         <button
@@ -814,7 +813,7 @@ export default function Services() {
                             setSelectedPdf(null)
                           }}
                           aria-label="Voltar para a lista de PDFs"
-                          className="absolute left-7 top-7 md:left-9 md:top-9 z-40 w-10 h-10 rounded-full flex items-center justify-center text-white/65 hover:text-white transition-colors"
+                          className="absolute left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full text-white/75 hover:text-white md:left-9 md:top-9 md:h-10 md:w-10"
                           style={{
                             background: 'rgba(12, 11, 11, 0.48)',
                             backdropFilter: 'blur(18px)',
@@ -824,12 +823,12 @@ export default function Services() {
                         >
                           <ArrowLeft size={18} strokeWidth={1.7} />
                         </button>
-                      <div className="grid grid-cols-1 gap-4 pt-0">
+                      <div className="grid h-full grid-cols-1 gap-4 pt-0">
                         <PdfPreview file={selectedPdf} />
                       </div>
                       </>
                     ) : (
-                      <div className="flex max-h-[calc(100vh-7rem)] min-h-[70vh] flex-col gap-8 overflow-y-auto pr-1">
+                      <div className="flex h-full flex-col gap-8 overflow-y-auto px-5 pb-8 pt-20 md:max-h-[calc(100vh-7rem)] md:min-h-[70vh] md:px-0 md:pb-0 md:pt-0 md:pr-1">
                         <div className="max-w-3xl">
                           <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
                             {modalService.number}. {modalService.title}
@@ -860,7 +859,7 @@ export default function Services() {
                     )}
                   </div>
                 ) : (
-                  <div className="relative z-10 grid max-h-[calc(100vh-4rem)] grid-cols-1 lg:grid-cols-[0.82fr_1.18fr] gap-8 md:gap-12 overflow-y-auto p-6 md:p-10 lg:p-12">
+                  <div className="relative z-10 grid h-full grid-cols-1 gap-8 overflow-y-auto px-5 pb-8 pt-20 md:h-auto md:max-h-[calc(100vh-4rem)] md:gap-12 md:p-10 lg:grid-cols-[0.82fr_1.18fr] lg:p-12">
                     <div className="flex flex-col justify-between gap-8 lg:sticky lg:top-0 lg:self-start">
                       <div>
                         <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
