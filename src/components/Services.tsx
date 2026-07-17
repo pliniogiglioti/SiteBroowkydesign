@@ -90,10 +90,11 @@ function PdfPreview({ file }: { file: ProjectFile }) {
 
             const baseViewport = page.getViewport({ scale: 1 })
             const containerWidth = container.clientWidth || 900
-            const availableWidth = isVerticalPdf
+            const isMobile = window.matchMedia('(max-width: 639px)').matches
+            const availableWidth = isVerticalPdf && !isMobile
               ? (containerWidth - pageGap) / 2
               : containerWidth
-            const scale = Math.min(availableWidth / baseViewport.width, 1.65)
+            const scale = Math.min(availableWidth / baseViewport.width, isMobile ? 2.25 : 1.65)
             const viewport = page.getViewport({ scale })
             const outputScale = window.devicePixelRatio || 1
             const canvas = document.createElement('canvas')
@@ -143,7 +144,7 @@ function PdfPreview({ file }: { file: ProjectFile }) {
 
   return (
     <div className="h-full sm:col-span-2 overflow-hidden rounded-none border-0 bg-black/20 md:rounded-2xl md:border md:border-white/10">
-      <div className="h-full min-h-0 overflow-y-auto px-2 pb-4 pt-16 md:h-[78vh] md:min-h-[520px] md:px-4 md:py-4">
+      <div className="h-full min-h-0 overflow-y-auto px-0 pb-4 pt-16 md:h-[78vh] md:min-h-[520px] md:px-4 md:py-4">
         {status && (
           <div className="flex h-full items-center justify-center text-center">
             <span className="font-dm text-sm text-white/40">{status}</span>
