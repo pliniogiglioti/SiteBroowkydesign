@@ -54,7 +54,7 @@ export default function About() {
 
   return (
     <section id="about" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-16 md:py-24">
-      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
+      <div className="about-container site-container mx-auto w-full max-w-none">
         <div className="about-layout grid grid-cols-1 items-center gap-12 xl:min-h-[410px] xl:grid-cols-[1fr_632px] xl:gap-20">
 
           {/* Left: title + description */}

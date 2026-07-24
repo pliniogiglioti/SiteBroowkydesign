@@ -240,9 +240,19 @@
   font-size: clamp(76px, 14.7vw, 282px);
 }
 
+.about-container {
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
 @media (max-width: 767px) {
   .hero-name {
     font-size: clamp(68px, 20vw, 96px);
+  }
+
+  .about-container {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .case-tabs button {
@@ -275,6 +285,27 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-container {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1599px) {
+  .about-container {
+    padding-left: 96px !important;
+    padding-right: 96px !important;
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 2199px) {
+  .about-container {
+    padding-left: 200px !important;
+    padding-right: 200px !important;
+  }
+}
+
 @media (min-width: 1367px) and (max-width: 2199px) {
   .case-modal-shell {
     max-width: 1680px;
@@ -286,6 +317,12 @@
     max-width: 2400px !important;
     padding-left: 96px !important;
     padding-right: 96px !important;
+  }
+
+  .about-container {
+    max-width: none !important;
+    padding-left: 320px !important;
+    padding-right: 320px !important;
   }
 
   .hero-name {
