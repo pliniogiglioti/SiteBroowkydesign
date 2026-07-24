@@ -325,6 +325,17 @@
     padding-right: 320px !important;
   }
 
+  .navbar-shell {
+    padding-left: 320px !important;
+    padding-right: 320px !important;
+  }
+
+  .navbar-container {
+    max-width: none !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+
   .hero-name {
     font-size: clamp(300px, 11vw, 420px);
   }

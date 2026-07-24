@@ -16,10 +16,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed left-0 right-0 top-4 z-50 flex justify-center px-4 md:top-[34px]"
+      className="navbar-shell fixed left-0 right-0 top-4 z-50 flex justify-center px-4 md:top-[34px]"
     >
       {/* Pill container com glass + bordas 30px */}
-      <div className="site-container glass-navbar relative flex w-full max-w-[1520px] items-center justify-between rounded-[32px] px-5 py-4 md:px-8">
+      <div className="navbar-container site-container glass-navbar relative flex w-full max-w-[1520px] items-center justify-between rounded-[32px] px-5 py-4 md:px-8">
         {/* Logo — 120px */}
         <a href="#hero" className="shrink-0">
           <img src="/logobroowk.svg" alt="Broowky Design" className="h-8 w-[120px] object-contain" />
