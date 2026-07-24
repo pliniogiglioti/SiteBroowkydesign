@@ -314,9 +314,9 @@
 
 @media (min-width: 2200px) {
   .site-container {
-    max-width: 2400px !important;
-    padding-left: 96px !important;
-    padding-right: 96px !important;
+    max-width: none !important;
+    padding-left: 320px !important;
+    padding-right: 320px !important;
   }
 
   .about-container {
