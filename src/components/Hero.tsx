@@ -1,6 +1,6 @@
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import Ticker from './Ticker'
+import { ArrowUpRight } from 'lucide-react'
 import { InstagramIcon, LinkedinIcon, WhatsAppIcon } from './SocialIcons'
 
 const socials = [
@@ -36,23 +36,26 @@ export default function Hero() {
   const imageScale = useTransform(smoothScrollProgress, [0, 1], [1, 1.14])
 
   return (
-    <section ref={ref} id="hero" className="relative h-screen flex flex-col overflow-hidden bg-[#0c0b0b]">
-
-      {/* Purple glow */}
-      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] h-[55vw] rounded-full bg-[#5700ef]/12 blur-[150px] pointer-events-none z-0" />
+    <section ref={ref} id="hero" className="relative flex min-h-[760px] h-screen flex-col overflow-hidden bg-[#07070a]">
+      <img
+        src="/hero-background-v2.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
 
       {/* ── MAIN AREA ─────────────────────────────────── */}
       <div className="flex-1 relative overflow-hidden">
 
         {/* Text — z:1 (behind image) — dentro do container 1520px */}
-        <div className="absolute top-[110px] md:top-[150px] left-0 right-0 z-[1] select-none overflow-hidden flex justify-center">
-          <div className="w-full max-w-[1520px] px-5 md:px-10">
+        <div className="absolute left-0 right-0 top-[130px] z-[1] flex select-none justify-center overflow-hidden md:top-[185px]">
+          <div className="w-full max-w-[1600px] px-5 md:px-10">
             {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7 }}
-              style={{ fontSize: 'clamp(80px, 20vw, 280px)', x: gabrielX }}
+              style={{ fontSize: 'clamp(76px, 14.7vw, 282px)', x: gabrielX }}
               className="font-geist font-black leading-[0.88] text-white text-left tracking-[-0.03em]"
             >
               GABRIEL
@@ -63,7 +66,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.08, duration: 0.7 }}
-              style={{ fontSize: 'clamp(80px, 20vw, 280px)', x: teixeiraX }}
+              style={{ fontSize: 'clamp(76px, 14.7vw, 282px)', x: teixeiraX }}
               className="font-geist font-black leading-[0.88] text-white text-right tracking-[-0.03em]"
             >
               TEIXEIRA
@@ -88,15 +91,15 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="absolute bottom-0 left-0 right-0 pb-4 md:pb-6"
+          className="absolute bottom-0 left-0 right-0 pb-7 md:pb-11"
           style={{ zIndex: 3 }}
         >
           {/* Container alinhado ao max-width do site — 1520px */}
-          <div className="max-w-[1520px] mx-auto px-5 md:px-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+          <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-6 px-5 md:flex-row md:items-end md:px-10">
 
             {/* Left: tagline + social icons (embaixo) */}
             <div className="flex flex-col gap-3 md:gap-4">
-              <p className="font-geist font-bold text-[20px] md:text-[35px] text-white uppercase tracking-[0.02em] leading-[1.1] max-w-[500px]">
+              <p className="max-w-[560px] font-geist text-[20px] font-bold uppercase leading-[1.14] tracking-[0.01em] text-white md:text-[34px]">
                 TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
               </p>
               <div className="flex items-center gap-2 md:gap-3">
@@ -107,7 +110,7 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full glass flex items-center justify-center text-white/60 hover:text-white transition-colors duration-200"
+                    className="glass flex h-10 w-10 items-center justify-center rounded-full text-white/65 transition-colors duration-200 hover:text-white md:h-12 md:w-12"
                   >
                     <Icon size={20} />
                   </a>
@@ -116,24 +119,30 @@ export default function Hero() {
             </div>
 
             {/* Right: description + buttons */}
-            <div className="flex flex-col gap-3 max-w-[400px] items-start md:items-end">
-              <p className="font-dm text-[14px] md:text-[18px] text-white/55 leading-relaxed text-left md:text-right">
-                Cada Projeto Que Assumo É Motivado Por Um Propósito, Orientado Pela Paixão E Elaborado Para Gerar Um Impacto Significativo É Duradouro.
+            <div className="flex max-w-[440px] flex-col items-start gap-10 md:items-start">
+              <p className="text-left font-dm text-[14px] leading-[1.35] text-white md:text-[16px]">
+                Cada Projeto Que Assumo É Motivado Por Um Propósito, Orientado Pela Paixão E
+                Elaborado Para Gerar Um Impacto Significativo E Duradouro.
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-10">
                 <a
                   href="#contact"
-                  className="bg-[#5700ef] hover:bg-[#7b2fff] text-white font-dm text-xs px-5 py-2.5 rounded-full transition-all duration-300"
+                  className="flex h-[52px] items-center gap-5 rounded-full bg-[#5700ef] py-1 pl-6 pr-1 font-dm text-[15px] text-white transition-all duration-300 hover:bg-[#7b2fff]"
                   style={{ boxShadow: '0 0 18px rgba(87,0,239,0.5)' }}
                 >
                   Contato
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#5700ef]">
+                    <ArrowUpRight size={18} strokeWidth={1.6} />
+                  </span>
                 </a>
                 <a
                   href="#projects"
-                  className="font-dm text-xs text-white/60 hover:text-white flex items-center gap-1 transition-colors duration-200"
+                  className="glass flex h-[52px] items-center gap-8 rounded-full py-1 pl-6 pr-1 font-dm text-[15px] text-white transition-colors duration-200"
                 >
                   Veja os projetos
-                  <span className="text-base leading-none ml-0.5">→</span>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.08]">
+                    <ArrowUpRight size={18} strokeWidth={1.6} />
+                  </span>
                 </a>
               </div>
             </div>
@@ -141,10 +150,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* ── TICKER ───────────────────────────────────── */}
-      <div className="border-t border-white/10 py-3 bg-[#5700ef] relative z-10">
-        <Ticker speed={35} />
-      </div>
     </section>
   )
 }

@@ -16,19 +16,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+      className="fixed left-0 right-0 top-4 z-50 flex justify-center px-4 md:top-[34px]"
     >
       {/* Pill container com glass + bordas 30px */}
-      <div
-        className="w-full max-w-[1520px] relative flex items-center justify-between px-8 py-3"
-        style={{
-          background: 'rgba(255, 255, 255, 0.06)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.10)',
-          borderRadius: '30px',
-        }}
-      >
+      <div className="glass-navbar relative flex w-full max-w-[1520px] items-center justify-between rounded-[32px] px-8 py-4">
         {/* Logo — 120px */}
         <a href="#hero" className="shrink-0">
           <img src="/logobroowk.svg" alt="Broowky Design" className="h-8 w-[120px] object-contain" />
@@ -67,14 +58,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[calc(100%+8px)] left-4 right-4 md:hidden overflow-hidden"
-            style={{
-              background: 'rgba(12, 11, 11, 0.95)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '24px',
-            }}
+            className="glass-navbar absolute left-4 right-4 top-[calc(100%+8px)] overflow-hidden rounded-[24px] md:hidden"
           >
             <nav className="flex flex-col px-6 py-5 gap-4">
               {navLinks.map((link) => (

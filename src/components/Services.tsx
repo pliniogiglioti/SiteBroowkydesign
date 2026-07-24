@@ -18,25 +18,25 @@ const services = [
     number: '01',
     title: 'Design de Produto',
     description:
-      'O design de produtos combina criatividade e funcionalidade, transformando ideias em soluções tangíveis que são fáceis de usar, visualmente atraentes e criadas para melhorar as experiências do dia a dia de forma significativa.',
+      'O design de produtos combina criatividade e funcionalidade, transformando ideias em soluções tangíveis, intuitivas e visualmente atraentes.',
   },
   {
     number: '02',
     title: 'UI/UX Design',
     description:
-      'Criamos interfaces intuitivas e experiências digitais que colocam o usuário no centro. Cada tela é pensada para guiar, engajar e converter, unindo estética e usabilidade em harmonia perfeita.',
+      'Criamos interfaces intuitivas e experiências digitais centradas nas pessoas. Cada tela é pensada para orientar, envolver e converter.',
   },
   {
     number: '03',
     title: 'Identidade Visual',
     description:
-      'Construímos marcas que comunicam, conectam e ficam na memória. Da paleta de cores à tipografia, cada elemento é escolhido com intenção para criar uma identidade coesa e poderosa.',
+      'Construímos marcas que comunicam, conectam e permanecem na memória. Cada elemento é escolhido com intenção para formar uma identidade consistente.',
   },
   {
     number: '04',
     title: 'Catálogos',
     description:
-      'Desenvolvemos catálogos impressos e digitais que apresentam seus produtos e serviços com elegância. Design editorial que equilibra informação e estética para encantar e converter.',
+      'Desenvolvemos catálogos impressos e digitais que apresentam produtos e serviços com clareza, elegância e uma direção editorial marcante.',
   },
 ]
 
@@ -46,8 +46,9 @@ function PdfPreview({ file }: { file: ProjectFile }) {
 
   useEffect(() => {
     let cancelled = false
-    let renderTask: RenderTask | null = null
     let loadingTask: PDFDocumentLoadingTask | null = null
+    const renderTasks = new Set<RenderTask>()
+    const pageObservers: IntersectionObserver[] = []
     const container = containerRef.current
 
     if (!container) return
@@ -96,14 +97,7 @@ function PdfPreview({ file }: { file: ProjectFile }) {
               : containerWidth
             const scale = Math.min(availableWidth / baseViewport.width, isMobile ? 2.25 : 1.65)
             const viewport = page.getViewport({ scale })
-            const outputScale = window.devicePixelRatio || 1
             const canvas = document.createElement('canvas')
-            const context = canvas.getContext('2d')
-
-            if (!context) continue
-
-            canvas.width = Math.floor(viewport.width * outputScale)
-            canvas.height = Math.floor(viewport.height * outputScale)
             canvas.style.width = `${viewport.width}px`
             canvas.style.height = `${viewport.height}px`
             canvas.className = 'max-w-full rounded-xl bg-white'
@@ -113,15 +107,44 @@ function PdfPreview({ file }: { file: ProjectFile }) {
             pageWrapper.appendChild(canvas)
             spreadWrapper.appendChild(pageWrapper)
 
-            renderTask = page.render({
-              canvas,
-              canvasContext: context,
-              viewport,
-              transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : undefined,
-            })
+            const observer = new IntersectionObserver(
+              (entries) => {
+                if (!entries.some((entry) => entry.isIntersecting) || cancelled) return
 
-            await renderTask.promise
-            renderTask = null
+                observer.disconnect()
+
+                const context = canvas.getContext('2d', { alpha: false })
+                if (!context) return
+
+                // Mantem textos e detalhes nitidos sem alterar o peso do arquivo PDF.
+                const outputScale = Math.min(Math.max(window.devicePixelRatio || 1, 2), 2.5)
+                canvas.width = Math.floor(viewport.width * outputScale)
+                canvas.height = Math.floor(viewport.height * outputScale)
+
+                const task = page.render({
+                  canvas,
+                  canvasContext: context,
+                  viewport,
+                  transform: [outputScale, 0, 0, outputScale, 0, 0],
+                })
+
+                renderTasks.add(task)
+                task.promise
+                  .catch((error) => {
+                    if (error instanceof Error && error.name === 'RenderingCancelledException') return
+                    if (!cancelled) canvas.classList.add('opacity-60')
+                  })
+                  .finally(() => renderTasks.delete(task))
+              },
+              {
+                root: container.parentElement,
+                rootMargin: '700px 0px',
+                threshold: 0.01,
+              },
+            )
+
+            pageObservers.push(observer)
+            observer.observe(pageWrapper)
           }
         }
       } catch (error) {
@@ -136,7 +159,8 @@ function PdfPreview({ file }: { file: ProjectFile }) {
 
     return () => {
       cancelled = true
-      renderTask?.cancel()
+      pageObservers.forEach((observer) => observer.disconnect())
+      renderTasks.forEach((task) => task.cancel())
       loadingTask?.destroy()
       container.innerHTML = ''
     }
@@ -553,34 +577,34 @@ export default function Services() {
   }
 
   return (
-    <section id="services" ref={ref} className="py-12 md:py-20 bg-[#0c0b0b] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[#5700ef]/6 blur-[120px] pointer-events-none" />
-
-      <div className="max-w-[1520px] mx-auto px-5 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
+    <section id="services" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-14 md:py-20">
+      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
 
           {/* Left: title + description + cta */}
-          <div className="flex flex-col gap-6 lg:sticky lg:top-28">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-28">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
-              className="section-title text-[clamp(2rem,4vw,3.5rem)] text-white leading-tight max-w-md"
+              className="section-title max-w-[720px] text-[clamp(2.5rem,4.2vw,4.25rem)] uppercase leading-[1.08] text-white"
             >
-              SERVIÇOS CRIATIVOS<br />QUE ESTIMULAM O CRESCIMENTO
+              Serviços criativos que
+              <br />
+              estimulam o
+              <br />
+              crescimento
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="font-dm text-[16px] text-white/45 leading-relaxed max-w-sm"
+              className="max-w-[680px] font-dm text-[16px] leading-relaxed text-white/50"
             >
-              Gabriel Teixeira — designer apaixonado, baseado no Brasil, com um olhar apurado
-              para estética e uma obsessão saudável por criatividade. Não me contento apenas em
-              criar coisas bonitas; quero que cada projeto conte uma história, resolva um problema
-              real e deixe uma impressão final, cada detalhe fruto das minhas experiências visuais
-              que movem pessoas — esse é a contribuição do meu trabalho.
+              Gabriel Teixeira — designer brasileiro movido por estética, estratégia e criatividade.
+              Meu trabalho vai além de criar algo bonito: cada projeto precisa contar uma história,
+              resolver um problema real e construir uma experiência que permaneça na memória.
             </motion.p>
 
             <motion.a
@@ -588,27 +612,17 @@ export default function Services() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25, duration: 0.6 }}
-              className="font-dm text-sm text-white/60 hover:text-white flex items-center gap-1.5 w-fit transition-colors duration-200 border-b border-white/20 pb-0.5"
+              className="glass flex h-[52px] w-fit items-center gap-8 rounded-full py-1 pl-6 pr-1 font-dm text-[16px] text-white transition-colors"
             >
               Ver projeto
-              <span>→</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                <ArrowUpRight size={18} strokeWidth={1.5} />
+              </span>
             </motion.a>
           </div>
 
           {/* Right: accordion */}
           <div className="flex flex-col">
-            {/* Small intro text */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="font-dm text-[16px] text-white/35 leading-relaxed mb-6"
-            >
-              Criamos designs bem pensados e inovadores que transformam visões em realidades
-              significativas, combinando criatividade e estratégia para inspirar, envolver e
-              causar impacto.
-            </motion.p>
-
             {/* Accordion */}
             <div className="flex flex-col">
               {services.map((service, i) => (
@@ -617,18 +631,18 @@ export default function Services() {
                   initial={{ opacity: 0, x: 30 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }}
-                  className="border-b border-white/8"
+                  className="border-b border-white/10"
                 >
                   <button
                     onClick={() => setOpenIndex(openIndex === i ? -1 : i)}
-                    className="w-full flex items-center justify-between py-5 text-left group"
+                    className="group flex w-full items-center justify-between py-6 text-left"
                   >
-                    <div className="flex items-center gap-4">
-                      <span className="font-dm text-xs text-[#5700ef] tracking-widest">
+                    <div className="flex items-center gap-3">
+                      <span className="font-dm text-[24px] font-light text-white">
                         {service.number}.
                       </span>
                       <span
-                        className={`font-geist font-bold text-base transition-colors duration-200 ${
+                        className={`font-geist text-[clamp(1.35rem,2vw,1.8rem)] font-medium transition-colors duration-200 ${
                           openIndex === i ? 'text-white' : 'text-white/60 group-hover:text-white'
                         }`}
                       >
@@ -636,13 +650,13 @@ export default function Services() {
                       </span>
                     </div>
                     <div
-                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                         openIndex === i
-                          ? 'bg-[#5700ef] text-white'
-                          : 'glass text-white/40 group-hover:text-white'
+                          ? 'border-[#5700ef]/70 bg-[#5700ef]/20 text-white'
+                          : 'border-white/15 bg-white/[0.03] text-white/55 group-hover:border-white/35 group-hover:text-white'
                       }`}
                     >
-                      {openIndex === i ? <Minus size={13} /> : <Plus size={13} />}
+                      {openIndex === i ? <Minus size={18} strokeWidth={1.5} /> : <Plus size={18} strokeWidth={1.5} />}
                     </div>
                   </button>
 
@@ -655,16 +669,12 @@ export default function Services() {
                         transition={{ duration: 0.35, ease: 'easeOut' }}
                         className="overflow-hidden"
                       >
-                        <p className="font-dm text-[16px] text-white/50 leading-relaxed pb-5 pr-8">
-                          {service.description}
-                        </p>
-
-                        <div className="flex items-center gap-2 sm:gap-3 pb-6">
+                        <div className="flex items-center gap-2 pb-5 sm:gap-3">
                           <button
                             type="button"
                             onClick={() => scrollWorks(i, -1)}
                             aria-label="Ver trabalhos anteriores"
-                            className="w-7 h-10 flex items-center justify-center text-white/35 hover:text-white transition-colors shrink-0"
+                            className="flex h-10 w-8 shrink-0 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/[0.05] hover:text-white"
                           >
                             <ArrowLeft size={17} strokeWidth={1.6} />
                           </button>
@@ -694,9 +704,7 @@ export default function Services() {
                                         event.stopPropagation()
                                         openProject(i, workIndex)
                                       }}
-                                      className={`service-carousel-card glass-card w-full rounded-xl p-4 flex flex-col justify-end overflow-hidden relative bg-[#111] text-left group/project ${
-                                        i === 2 ? 'aspect-[16/9]' : 'aspect-[4/3]'
-                                      }`}
+                                      className="service-carousel-card glass-card group/project relative flex aspect-square w-full flex-col justify-end overflow-hidden rounded-[18px] bg-[#111] p-4 text-left sm:rounded-[22px] lg:rounded-[26px]"
                                     >
                                       {work.coverPdf ? (
                                         <div className="service-carousel-card-bg absolute inset-0 z-0">
@@ -729,7 +737,7 @@ export default function Services() {
                                 ))}
                               </div>
                             ) : (
-                              <div className="glass-card aspect-[4/3] rounded-xl flex items-center justify-center px-5 text-center">
+                              <div className="glass-card flex aspect-square items-center justify-center rounded-[18px] px-5 text-center sm:rounded-[22px] lg:rounded-[26px]">
                                 <span className="font-dm text-sm text-white/35">
                                   Adicione subpastas com capa.png e config.txt em public/servicos para criar cards.
                                 </span>
@@ -741,11 +749,15 @@ export default function Services() {
                             type="button"
                             onClick={() => scrollWorks(i, 1)}
                             aria-label="Ver mais trabalhos"
-                            className="w-7 h-10 flex items-center justify-center text-white/35 hover:text-white transition-colors shrink-0"
+                            className="flex h-10 w-8 shrink-0 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/[0.05] hover:text-white"
                           >
                             <ArrowRight size={17} strokeWidth={1.6} />
                           </button>
                         </div>
+
+                        <p className="pb-6 pr-8 font-dm text-[16px] leading-relaxed text-white/50">
+                          {service.description}
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -776,13 +788,7 @@ export default function Services() {
                 exit={{ y: 18, opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.24, ease: 'easeOut' }}
                 onClick={(event) => event.stopPropagation()}
-                className="relative h-full w-full overflow-hidden rounded-none md:h-auto md:max-h-full md:rounded-[30px]"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.10)',
-                }}
+                className="glass-panel relative h-full w-full overflow-hidden rounded-none md:h-auto md:max-h-full md:rounded-[30px]"
               >
                 <div className="absolute top-0 right-0 w-[360px] h-[260px] bg-[#5700ef]/18 blur-[100px] pointer-events-none" />
 
@@ -814,13 +820,7 @@ export default function Services() {
                             setSelectedPdf(null)
                           }}
                           aria-label="Voltar para a lista de PDFs"
-                          className="absolute left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full text-white/75 hover:text-white md:left-9 md:top-9 md:h-10 md:w-10"
-                          style={{
-                            background: 'rgba(12, 11, 11, 0.48)',
-                            backdropFilter: 'blur(18px)',
-                            WebkitBackdropFilter: 'blur(18px)',
-                            border: '1px solid rgba(255, 255, 255, 0.12)',
-                          }}
+                          className="glass absolute left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full text-white/75 hover:text-white md:left-9 md:top-9 md:h-10 md:w-10"
                         >
                           <ArrowLeft size={18} strokeWidth={1.7} />
                         </button>

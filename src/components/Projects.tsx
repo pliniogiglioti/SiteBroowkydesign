@@ -1,79 +1,90 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 
 const projects = [
   {
     id: 1,
     title: 'Boots Horse',
     description:
-      'Plataforma institucional e comercial voltada ao universo equestre, com foco na apresentação de produtos e captação de revendedores.',
+      'Plataforma institucional e comercial para o universo equestre, focada na apresentação de produtos e na captação de revendedores.',
   },
   {
     id: 2,
     title: 'Gepam',
     description:
-      'Plataforma institucional de consultoria para gestão pública, com foco em orientação técnica e suporte especializado para órgãos municipais.',
+      'Plataforma de consultoria para gestão pública, com orientação técnica e suporte especializado para órgãos municipais.',
   },
   {
     id: 3,
     title: 'Real Estate Website',
     description:
-      'A modern platform showcasing AI solutions with clear visuals, engaging content, and an easy-to-use design.',
+      'Experiência digital para apresentar imóveis com clareza, navegação intuitiva e uma comunicação visual envolvente.',
   },
   {
     id: 4,
     title: 'CRM Dashboard',
     description:
-      'A modern platform showcasing AI solutions with clear visuals, engaging content, and an easy-to-use design.',
+      'Painel inteligente para organizar informações, acompanhar resultados e tornar decisões complexas mais simples.',
   },
   {
     id: 5,
     title: 'Boots Horse',
     description:
-      'Plataforma institucional e comercial voltada ao universo equestre, com foco na apresentação de produtos e captação de revendedores.',
+      'Plataforma institucional e comercial para o universo equestre, focada na apresentação de produtos e na captação de revendedores.',
   },
   {
     id: 6,
     title: 'Gepam',
     description:
-      'Plataforma institucional de consultoria para gestão pública, com foco em orientação técnica e suporte especializado para órgãos municipais.',
+      'Plataforma de consultoria para gestão pública, com orientação técnica e suporte especializado para órgãos municipais.',
   },
   {
     id: 7,
     title: 'Real Estate Website',
     description:
-      'A modern platform showcasing AI solutions with clear visuals, engaging content, and an easy-to-use design.',
+      'Experiência digital para apresentar imóveis com clareza, navegação intuitiva e uma comunicação visual envolvente.',
   },
   {
     id: 8,
     title: 'CRM Dashboard',
     description:
-      'A modern platform showcasing AI solutions with clear visuals, engaging content, and an easy-to-use design.',
+      'Painel inteligente para organizar informações, acompanhar resultados e tornar decisões complexas mais simples.',
   },
 ]
 
-function ProjectCard({ project, index, isInView }: { project: typeof projects[0]; index: number; isInView: boolean }) {
+function ProjectCard({
+  project,
+  index,
+  isInView,
+}: {
+  project: (typeof projects)[0]
+  index: number
+  isInView: boolean
+}) {
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: 0.05 + index * 0.07, duration: 0.6, ease: 'easeOut' }}
-      className="group cursor-pointer"
+      transition={{ delay: 0.05 + index * 0.06, duration: 0.6, ease: 'easeOut' }}
+      className="group"
     >
-      {/* Image placeholder */}
-      <div className="relative rounded-xl overflow-hidden aspect-[4/3] bg-white/4 border border-white/6 mb-3 group-hover:border-[#5700ef]/30 transition-colors duration-300">
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-10 h-10 rounded-full bg-[#5700ef] flex items-center justify-center">
-            <ArrowUpRight size={16} className="text-white" />
-          </div>
+      <div
+        className="glass-panel relative aspect-square overflow-hidden rounded-[20px] transition-all duration-500 group-hover:border-[#5700ef]/50 group-hover:shadow-[0_24px_70px_rgba(87,0,239,0.16)] sm:rounded-[24px] lg:rounded-[30px]"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-black/10" />
+        <div className="glass-icon absolute bottom-5 right-5 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full text-white/70 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ArrowUpRight size={18} strokeWidth={1.5} />
         </div>
       </div>
 
-      {/* Text */}
-      <h3 className="font-geist font-bold text-white text-sm mb-1">{project.title}</h3>
-      <p className="font-dm text-[16px] text-white/40 leading-relaxed line-clamp-2">{project.description}</p>
-    </motion.div>
+      <h3 className="mt-4 font-geist text-[21px] font-semibold leading-tight text-white">
+        {project.title}
+      </h3>
+      <p className="mt-2 font-dm text-[14px] leading-relaxed text-white/45">
+        {project.description}
+      </p>
+    </motion.article>
   )
 }
 
@@ -82,49 +93,60 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="projects" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-[500px] h-[400px] rounded-full bg-[#5700ef]/5 blur-[120px] pointer-events-none" />
-
-      <div className="max-w-[1520px] mx-auto px-10">
-
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4 gap-6">
+    <section id="projects" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-14 md:py-20">
+      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mb-9 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_440px] lg:items-start">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="section-title text-[clamp(1.8rem,4vw,3.5rem)] text-white leading-tight max-w-sm"
+            className="section-title max-w-[760px] text-[clamp(2.25rem,3.7vw,3.75rem)] uppercase leading-[1.13] text-white"
           >
-            DESIGN QUE TRANSFORMA IDEIAS EM REALIDADE
+            Design que transforma
+            <br />
+            ideias em realidade
           </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex items-center gap-3 shrink-0 pt-2"
+            transition={{ delay: 0.14, duration: 0.65 }}
+            className="flex flex-col gap-6"
           >
-            <a href="#" className="font-dm text-xs text-white/50 hover:text-white flex items-center gap-1 transition-colors">
-              Ver tudo <ArrowUpRight size={12} />
-            </a>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                aria-label="Projetos anteriores"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/55 text-white transition-colors hover:border-white"
+              >
+                <ArrowLeft size={19} strokeWidth={1.4} />
+              </button>
+              <span className="h-px min-w-10 flex-1 bg-white/35" />
+              <button
+                type="button"
+                aria-label="Próximos projetos"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/55 text-white transition-colors hover:border-white"
+              >
+                <ArrowRight size={19} strokeWidth={1.4} />
+              </button>
+              <a
+                href="#projects"
+                className="ml-8 whitespace-nowrap font-dm text-[16px] text-white transition-colors hover:text-white/70"
+              >
+                Ver tudo
+              </a>
+            </div>
+
+            <p className="font-dm text-[16px] leading-relaxed text-white/55">
+              Criamos designs bem pensados e inovadores que transformam visões em realidades
+              significativas, combinando criatividade e estratégia para inspirar, envolver e causar impacto.
+            </p>
           </motion.div>
         </div>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.15, duration: 0.6 }}
-          className="font-dm text-[16px] text-white/40 max-w-md leading-relaxed mb-10"
-        >
-          Criamos designs bem pensados e inovadores que transformam visões em realidades
-          significativas, combinando criatividade e estratégia para inspirar, envolver e causar impacto.
-        </motion.p>
-
-        {/* 4-column grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} isInView={isInView} />
+        <div className="grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} isInView={isInView} />
           ))}
         </div>
       </div>

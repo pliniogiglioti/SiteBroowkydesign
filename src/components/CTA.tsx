@@ -1,76 +1,66 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 
 export default function CTA() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="contact" ref={ref} className="py-20 bg-[#0c0b0b] relative overflow-hidden">
-      <div className="max-w-[1520px] mx-auto px-10">
+    <section id="contact" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-12 md:py-20">
+      <div className="mx-auto max-w-[1550px] px-5 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative rounded-3xl overflow-hidden py-20 px-8"
-          style={{
-            background: 'linear-gradient(135deg, #4400c8 0%, #5700ef 40%, #7b2fff 100%)',
-          }}
+          className="relative min-h-[390px] overflow-hidden md:min-h-[440px]"
         >
-          {/* Left blob decoration */}
-          <div
-            className="absolute -left-16 top-1/2 -translate-y-1/2 w-72 h-72 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(100,0,255,0.5) 0%, rgba(60,0,180,0.7) 60%, transparent 100%)',
-              borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%',
-            }}
-          />
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 1550 440"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+          >
+            <path
+              fill="#5700ef"
+              d="M0 390V24C0 10.75 10.75 0 24 0H305C174 94 57 238 0 390Z"
+            />
+            <path
+              fill="#5700ef"
+              d="M112 440C171 254 320 111 548 0H1013C1167 94 1247 330 1394 440H112Z"
+            />
+            <path
+              fill="#5700ef"
+              d="M1197 0H1526C1539.25 0 1550 10.75 1550 24V331C1536 359 1519 361 1491 349C1384 301 1289 104 1197 0Z"
+            />
+          </svg>
 
-          {/* Right blob decoration */}
-          <div
-            className="absolute -right-16 top-1/2 -translate-y-1/2 w-72 h-72 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(100,0,255,0.5) 0%, rgba(60,0,180,0.7) 60%, transparent 100%)',
-              borderRadius: '40% 60% 70% 30% / 40% 70% 30% 60%',
-            }}
-          />
-
-          {/* Subtle noise */}
-          <div
-            className="absolute inset-0 opacity-[0.06] pointer-events-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-            }}
-          />
-
-          {/* Content */}
-          <div className="relative z-10 flex flex-col items-center text-center">
+          <div className="relative z-10 flex min-h-[390px] flex-col items-center px-5 pt-[76px] text-center md:min-h-[440px] md:pt-[87px]">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="section-title text-[clamp(2rem,5vw,4rem)] text-white leading-tight max-w-xl"
+              className="section-title max-w-[790px] text-[clamp(2.35rem,4.4vw,4.35rem)] leading-[1.03] text-white"
             >
-              Vamos criar algo divertido e inovador!
+              Vamos criar algo
+              <br />
+              divertido e inovador!
             </motion.h2>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.35, duration: 0.6 }}
-              className="flex items-center gap-4 mt-10 flex-wrap justify-center"
+              className="mt-11 flex flex-wrap items-center justify-center gap-3"
             >
               <a
                 href="mailto:gabriel@example.com"
-                className="flex items-center gap-2 bg-white text-[#5700ef] font-dm font-semibold text-sm px-7 py-3.5 rounded-full hover:bg-white/90 transition-all duration-300 shadow-lg"
+                className="flex min-h-[50px] items-center rounded-full bg-white px-6 font-dm text-[15px] font-semibold text-[#5700ef] transition-colors duration-300 hover:bg-white/90"
               >
                 Comece agora
-                <ArrowRight size={16} />
               </a>
               <a
                 href="#projects"
-                className="flex items-center gap-2 border border-white/40 text-white font-dm text-sm px-7 py-3.5 rounded-full hover:bg-white/10 transition-all duration-300"
+                className="glass flex min-h-[50px] items-center rounded-full px-6 font-dm text-[15px] text-white transition-colors duration-300"
               >
                 Saiba mais
               </a>

@@ -10,7 +10,7 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <div className="noise-overlay bg-[#0c0b0b] min-h-screen">
+    <div className="min-h-screen bg-[#0c0b0b]">
       <Navbar />
       <main>
         <Hero />
