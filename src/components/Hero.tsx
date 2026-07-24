@@ -36,12 +36,12 @@ export default function Hero() {
   const imageScale = useTransform(smoothScrollProgress, [0, 1], [1, 1.14])
 
   return (
-    <section ref={ref} id="hero" className="relative flex min-h-[760px] h-screen flex-col overflow-hidden bg-[#07070a]">
+    <section ref={ref} id="hero" className="relative flex h-[900px] min-h-[760px] flex-col overflow-hidden bg-[#07070a] md:h-screen">
       <img
         src="/hero-background-v2.png"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        className="pointer-events-none absolute inset-0 h-full w-full scale-[1.015] object-cover"
       />
 
       {/* ── MAIN AREA ─────────────────────────────────── */}
@@ -49,14 +49,14 @@ export default function Hero() {
 
         {/* Text — z:1 (behind image) — dentro do container 1520px */}
         <div className="absolute left-0 right-0 top-[130px] z-[1] flex select-none justify-center overflow-hidden md:top-[185px]">
-          <div className="w-full max-w-[1600px] px-5 md:px-10">
+          <div className="site-container w-full max-w-[1600px] px-5 md:px-10">
             {/* GABRIEL — alinhado à esquerda, move para esquerda no scroll */}
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7 }}
-              style={{ fontSize: 'clamp(76px, 14.7vw, 282px)', x: gabrielX }}
-              className="font-geist font-black leading-[0.88] text-white text-left tracking-[-0.03em]"
+              style={{ x: gabrielX }}
+              className="hero-name font-geist font-black leading-[0.88] text-white text-left tracking-[-0.03em]"
             >
               GABRIEL
             </motion.h1>
@@ -66,8 +66,8 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.08, duration: 0.7 }}
-              style={{ fontSize: 'clamp(76px, 14.7vw, 282px)', x: teixeiraX }}
-              className="font-geist font-black leading-[0.88] text-white text-right tracking-[-0.03em]"
+              style={{ x: teixeiraX }}
+              className="hero-name font-geist font-black leading-[0.88] text-white text-right tracking-[-0.03em]"
             >
               TEIXEIRA
             </motion.h1>
@@ -82,7 +82,7 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15, duration: 1 }}
           style={{ scale: imageScale, zIndex: 2, transformOrigin: 'center center' }}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          className="absolute inset-0 h-full w-full object-cover object-[56%_center] pointer-events-none md:object-center"
           draggable={false}
         />
 
@@ -95,12 +95,12 @@ export default function Hero() {
           style={{ zIndex: 3 }}
         >
           {/* Container alinhado ao max-width do site — 1520px */}
-          <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-6 px-5 md:flex-row md:items-end md:px-10">
+          <div className="site-container mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-6 px-5 md:flex-row md:items-end md:px-10">
 
             {/* Left: tagline + social icons (embaixo) */}
             <div className="flex flex-col gap-3 md:gap-4">
               <p className="max-w-[560px] font-geist text-[20px] font-bold uppercase leading-[1.14] tracking-[0.01em] text-white md:text-[34px]">
-                TRABALHE COM PROPÓSITO,<br />ALIMENTE-SE DE PAIXÃO
+                DESIGN PARA MARCAS QUE NÃO NASCERAM<br />PARA PASSAR DESPERCEBIDAS
               </p>
               <div className="flex items-center gap-2 md:gap-3">
                 {socials.map(({ icon: Icon, href, label }) => (
@@ -149,6 +149,8 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] h-[3px] bg-[#0c0b0b]" />
 
     </section>
   )

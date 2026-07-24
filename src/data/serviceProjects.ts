@@ -9,6 +9,10 @@ export type ServiceProject = {
   title: string
   category: string
   modal: 'pdf' | 'image' | 'files'
+  url?: string
+  logo?: string
+  domain?: string
+  description?: string
   image?: string
   coverPdf?: ProjectFile
   folder: string
@@ -16,8 +20,222 @@ export type ServiceProject = {
 }
 
 export const serviceWorks: ServiceProject[][] = [
-  [],
-  [],
+  [
+    {
+      "title": "Boots Horse — Plataforma Digital",
+      "category": "Design de Produto",
+      "modal": "files",
+      "url": "https://bootshorse.com.br",
+      "logo": "/logos/boots-horse.svg",
+      "domain": "bootshorse.com.br",
+      "description": "Projeto digital pensado como produto: arquitetura da oferta, organização do catálogo e jornadas que conectam descoberta, confiança e conversão para clientes e revendedores.",
+      "image": "/servicos/design_de_produto/boots_horse_site/capa.png",
+      "folder": "/servicos/design_de_produto/boots_horse_site",
+      "files": [
+        {
+          "name": "00 prancha sistema visual",
+          "path": "/servicos/design_de_produto/boots_horse_site/00-prancha-sistema-visual.png",
+          "type": "image"
+        },
+        {
+          "name": "01 fundamentos paleta",
+          "path": "/servicos/design_de_produto/boots_horse_site/01-fundamentos-paleta.webp",
+          "type": "image"
+        },
+        {
+          "name": "02 fundamentos tipografia",
+          "path": "/servicos/design_de_produto/boots_horse_site/02-fundamentos-tipografia.webp",
+          "type": "image"
+        },
+        {
+          "name": "03 interface principal",
+          "path": "/servicos/design_de_produto/boots_horse_site/03-interface-principal.webp",
+          "type": "image"
+        },
+        {
+          "name": "04 componentes raios",
+          "path": "/servicos/design_de_produto/boots_horse_site/04-componentes-raios.webp",
+          "type": "image"
+        },
+        {
+          "name": "05 aplicacao home",
+          "path": "/servicos/design_de_produto/boots_horse_site/05-aplicacao-home.png",
+          "type": "image"
+        },
+        {
+          "name": "05 componentes navegacao",
+          "path": "/servicos/design_de_produto/boots_horse_site/05-componentes-navegacao.webp",
+          "type": "image"
+        },
+        {
+          "name": "06 aplicacao mobile",
+          "path": "/servicos/design_de_produto/boots_horse_site/06-aplicacao-mobile.png",
+          "type": "image"
+        },
+        {
+          "name": "06 grid aplicacoes",
+          "path": "/servicos/design_de_produto/boots_horse_site/06-grid-aplicacoes.webp",
+          "type": "image"
+        },
+        {
+          "name": "07 aplicacao mobile comercial",
+          "path": "/servicos/design_de_produto/boots_horse_site/07-aplicacao-mobile-comercial.png",
+          "type": "image"
+        },
+        {
+          "name": "08 aplicacao comercial",
+          "path": "/servicos/design_de_produto/boots_horse_site/08-aplicacao-comercial.png",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "title": "Tomahawk Collection — Plataforma de Marca",
+      "category": "Design de Produto",
+      "modal": "files",
+      "url": "https://tomahawkcollection.com.br",
+      "logo": "/logos/tomahawk-collection.svg",
+      "domain": "tomahawkcollection.com.br",
+      "description": "Produto digital criado para posicionar a marca, apresentar suas coleções e estruturar a jornada comercial de novos revendedores com clareza, desejo e percepção de valor.",
+      "image": "/servicos/design_de_produto/tomahawk_collection_site/capa.png",
+      "folder": "/servicos/design_de_produto/tomahawk_collection_site",
+      "files": [
+        {
+          "name": "00 prancha sistema visual",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/00-prancha-sistema-visual.png",
+          "type": "image"
+        },
+        {
+          "name": "01 fundamentos identidade",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/01-fundamentos-identidade.webp",
+          "type": "image"
+        },
+        {
+          "name": "02 fundamentos tipografia",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/02-fundamentos-tipografia.webp",
+          "type": "image"
+        },
+        {
+          "name": "03 interface principal",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/03-interface-principal.webp",
+          "type": "image"
+        },
+        {
+          "name": "04 componentes paleta",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/04-componentes-paleta.webp",
+          "type": "image"
+        },
+        {
+          "name": "05 aplicacao home",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/05-aplicacao-home.png",
+          "type": "image"
+        },
+        {
+          "name": "05 componentes grid",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/05-componentes-grid.webp",
+          "type": "image"
+        },
+        {
+          "name": "06 aplicacao mobile",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/06-aplicacao-mobile.png",
+          "type": "image"
+        },
+        {
+          "name": "06 navegacao aplicada",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/06-navegacao-aplicada.webp",
+          "type": "image"
+        },
+        {
+          "name": "07 aplicacao mobile comercial",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/07-aplicacao-mobile-comercial.png",
+          "type": "image"
+        },
+        {
+          "name": "08 aplicacao comercial",
+          "path": "/servicos/design_de_produto/tomahawk_collection_site/08-aplicacao-comercial.png",
+          "type": "image"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "title": "Boots Horse — Experiência E-commerce",
+      "category": "UI/UX Design",
+      "modal": "files",
+      "url": "https://bootshorse.com.br",
+      "logo": "/logos/boots-horse.svg",
+      "domain": "bootshorse.com.br",
+      "description": "Experiência responsiva criada no Figma, com hierarquia visual clara, navegação intuitiva e pontos de ação pensados para facilitar a descoberta dos produtos e o contato comercial.",
+      "image": "/servicos/ui_ux_design/boots_horse_site/capa.png",
+      "folder": "/servicos/ui_ux_design/boots_horse_site",
+      "files": [
+        {
+          "name": "01 home desktop",
+          "path": "/servicos/ui_ux_design/boots_horse_site/01-home-desktop.png",
+          "type": "image"
+        },
+        {
+          "name": "02 home mobile",
+          "path": "/servicos/ui_ux_design/boots_horse_site/02-home-mobile.png",
+          "type": "image"
+        },
+        {
+          "name": "02b mobile conversao",
+          "path": "/servicos/ui_ux_design/boots_horse_site/02b-mobile-conversao.png",
+          "type": "image"
+        },
+        {
+          "name": "03 jornada revendedor",
+          "path": "/servicos/ui_ux_design/boots_horse_site/03-jornada-revendedor.png",
+          "type": "image"
+        },
+        {
+          "name": "04 historia marca",
+          "path": "/servicos/ui_ux_design/boots_horse_site/04-historia-marca.png",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "title": "Tomahawk Collection — Experiência Digital",
+      "category": "UI/UX Design",
+      "modal": "files",
+      "url": "https://tomahawkcollection.com.br",
+      "logo": "/logos/tomahawk-collection.svg",
+      "domain": "tomahawkcollection.com.br",
+      "description": "Interface responsiva concebida no Figma, combinando narrativa visual imersiva, navegação objetiva, hierarquia tipográfica e chamadas estratégicas para conduzir usuários e potenciais revendedores.",
+      "image": "/servicos/ui_ux_design/tomahawk_collection_site/capa.png",
+      "folder": "/servicos/ui_ux_design/tomahawk_collection_site",
+      "files": [
+        {
+          "name": "01 home desktop",
+          "path": "/servicos/ui_ux_design/tomahawk_collection_site/01-home-desktop.png",
+          "type": "image"
+        },
+        {
+          "name": "02 home mobile",
+          "path": "/servicos/ui_ux_design/tomahawk_collection_site/02-home-mobile.png",
+          "type": "image"
+        },
+        {
+          "name": "02b mobile conversao",
+          "path": "/servicos/ui_ux_design/tomahawk_collection_site/02b-mobile-conversao.png",
+          "type": "image"
+        },
+        {
+          "name": "03 experiencia produto",
+          "path": "/servicos/ui_ux_design/tomahawk_collection_site/03-experiencia-produto.png",
+          "type": "image"
+        },
+        {
+          "name": "04 beneficios conversao",
+          "path": "/servicos/ui_ux_design/tomahawk_collection_site/04-beneficios-conversao.png",
+          "type": "image"
+        }
+      ]
+    }
+  ],
   [
     {
       "title": "data logistica",

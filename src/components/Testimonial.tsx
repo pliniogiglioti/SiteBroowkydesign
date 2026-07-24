@@ -8,13 +8,13 @@ export default function Testimonial() {
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-14 md:py-20">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-[minmax(390px,1.18fr)_1fr_1fr] lg:gap-y-9">
+      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="grid grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(390px,1.18fr)_1fr_1fr] xl:gap-y-9">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="section-title text-[clamp(2.35rem,4vw,4rem)] leading-[1.12] text-white lg:col-span-1"
+            className="section-title text-[clamp(2.35rem,4vw,4rem)] leading-[1.12] text-white xl:col-span-1"
           >
             Serviços criativos que
             <br />
@@ -25,7 +25,7 @@ export default function Testimonial() {
             initial={{ opacity: 0, x: 24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.12, duration: 0.65 }}
-            className="flex flex-col gap-6 lg:col-span-2 lg:w-[440px] lg:justify-self-end"
+            className="flex flex-col gap-6 xl:col-span-2 xl:w-[440px] xl:justify-self-end"
           >
             <div className="flex items-center gap-3">
               <button
@@ -60,7 +60,7 @@ export default function Testimonial() {
             initial={{ opacity: 0, x: -28 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.18, duration: 0.7 }}
-            className="flex min-h-[500px] flex-col items-start lg:min-h-[620px]"
+            className="flex min-h-[420px] flex-col items-start sm:min-h-[500px] xl:min-h-[620px]"
           >
             <span className="font-geist text-[74px] font-black leading-[0.55] text-white">“</span>
 
@@ -83,7 +83,7 @@ export default function Testimonial() {
             initial={{ opacity: 0, y: 28 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.24, duration: 0.7 }}
-            className="glass-panel min-h-[500px] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:min-h-[620px] lg:rounded-[30px]"
+            className="glass-panel min-h-[420px] overflow-hidden rounded-[20px] sm:min-h-[500px] sm:rounded-[24px] xl:min-h-[620px] xl:rounded-[30px]"
             aria-label="Imagem do projeto em destaque"
           />
 
@@ -91,7 +91,7 @@ export default function Testimonial() {
             initial={{ opacity: 0, y: 28 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.32, duration: 0.7 }}
-            className="glass-panel min-h-[500px] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:min-h-[620px] lg:rounded-[30px]"
+            className="glass-panel min-h-[420px] overflow-hidden rounded-[20px] sm:min-h-[500px] sm:rounded-[24px] xl:min-h-[620px] xl:rounded-[30px]"
             aria-label="Segunda imagem do projeto em destaque"
           />
         </div>

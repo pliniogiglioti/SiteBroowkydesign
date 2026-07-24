@@ -84,7 +84,7 @@ export default function Stats() {
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-16 md:py-24">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -103,8 +103,8 @@ export default function Stats() {
           Transformo visões em experiências que conectam.
         </motion.h2>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:mt-16 lg:mt-20 lg:grid-cols-[0.86fr_1.14fr_0.9fr]">
-          <div className="flex flex-col justify-between gap-9 py-1 lg:min-h-[560px]">
+        <div className="mt-14 grid grid-cols-1 gap-6 md:mt-16 xl:mt-20 xl:grid-cols-[0.86fr_1.14fr_0.9fr]">
+          <div className="flex flex-col justify-between gap-9 py-1 xl:min-h-[560px]">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.value}
@@ -133,7 +133,7 @@ export default function Stats() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.18, duration: 0.7 }}
-            className="glass-panel min-h-[420px] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:min-h-[560px] lg:rounded-[30px]"
+            className="glass-panel min-h-[360px] overflow-hidden rounded-[20px] sm:min-h-[420px] sm:rounded-[24px] xl:min-h-[560px] xl:rounded-[30px]"
             aria-label="Espaço reservado para conteúdo futuro"
           >
             <div className="h-full bg-gradient-to-br from-white/[0.035] via-transparent to-[#5700ef]/[0.035]" />

@@ -115,6 +115,10 @@ const getProject = async (categoryName, projectName) => {
     title: config.nome || toTitle(projectName),
     category: config.tipo || categoryName,
     modal,
+    ...(config.url ? { url: config.url } : {}),
+    ...(config.logo ? { logo: config.logo } : {}),
+    ...(config.dominio ? { domain: config.dominio } : {}),
+    ...(config.descricao ? { description: config.descricao } : {}),
     ...(cover ? { image: toPublicPath(path.join(projectDir, cover.name)) } : {}),
     ...(!cover && firstPdf ? { coverPdf: firstPdf } : {}),
     folder: toPublicPath(projectDir),
@@ -161,6 +165,10 @@ export type ServiceProject = {
   title: string
   category: string
   modal: 'pdf' | 'image' | 'files'
+  url?: string
+  logo?: string
+  domain?: string
+  description?: string
   image?: string
   coverPdf?: ProjectFile
   folder: string

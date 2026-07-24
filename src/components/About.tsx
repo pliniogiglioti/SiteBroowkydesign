@@ -54,8 +54,8 @@ export default function About() {
 
   return (
     <section id="about" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-16 md:py-24">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[410px] lg:grid-cols-[1fr_632px] lg:gap-20">
+      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="about-layout grid grid-cols-1 items-center gap-12 xl:min-h-[410px] xl:grid-cols-[1fr_632px] xl:gap-20">
 
           {/* Left: title + description */}
           <div className="flex max-w-[820px] flex-col gap-8">
@@ -87,16 +87,16 @@ export default function About() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="glass-tools-panel relative flex min-h-[342px] items-center justify-center overflow-hidden rounded-[20px] p-7 sm:rounded-[24px] md:p-[42px] lg:rounded-[30px]"
+            className="tools-panel glass-tools-panel relative flex min-h-[342px] items-center justify-center overflow-hidden rounded-[20px] p-7 sm:rounded-[24px] md:p-[42px] lg:rounded-[30px]"
           >
-            <div className="relative grid grid-cols-2 gap-[22px] sm:grid-cols-4 sm:gap-[26px] md:gap-[34px]">
+            <div className="tools-grid relative grid grid-cols-2 gap-[22px] sm:grid-cols-4 sm:gap-[26px] md:gap-[34px]">
               {tools.map((tool, i) => (
                 <motion.div
                   key={tool.name}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                  className="flex h-[92px] w-[92px] cursor-default items-center justify-center rounded-[9px] md:h-[110px] md:w-[110px]"
+                  className="tool-tile flex h-[92px] w-[92px] cursor-default items-center justify-center rounded-[9px] md:h-[110px] md:w-[110px]"
                   title={tool.name}
                   style={tool.source ? undefined : {
                     backgroundColor: tool.background,

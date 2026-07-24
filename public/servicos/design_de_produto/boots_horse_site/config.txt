@@ -1,0 +1,7 @@
+tipo=Design de Produto
+nome=Boots Horse — Plataforma Digital
+modal=files
+url=https://bootshorse.com.br
+logo=/logos/boots-horse.svg
+dominio=bootshorse.com.br
+descricao=Projeto digital pensado como produto: arquitetura da oferta, organização do catálogo e jornadas que conectam descoberta, confiança e conversão para clientes e revendedores.

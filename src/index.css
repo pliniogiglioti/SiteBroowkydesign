@@ -236,6 +236,56 @@
   background-clip: text;
 }
 
+.hero-name {
+  font-size: clamp(76px, 14.7vw, 282px);
+}
+
+@media (max-width: 767px) {
+  .hero-name {
+    font-size: clamp(68px, 20vw, 96px);
+  }
+}
+
+@media (min-width: 2200px) {
+  .site-container {
+    max-width: 2400px !important;
+    padding-left: 96px !important;
+    padding-right: 96px !important;
+  }
+
+  .hero-name {
+    font-size: clamp(300px, 11vw, 420px);
+  }
+
+  .section-title {
+    font-size: clamp(4.5rem, 3.2vw, 6rem) !important;
+  }
+
+  body {
+    font-size: 18px;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr 960px !important;
+    column-gap: 120px !important;
+  }
+
+  .tools-panel {
+    min-height: 500px !important;
+    padding: 80px !important;
+  }
+
+  .tools-grid {
+    gap: 40px !important;
+  }
+
+  .tool-tile {
+    width: 160px !important;
+    height: 160px !important;
+    border-radius: 14px !important;
+  }
+}
+
 .purple-glow {
   text-shadow: 0 0 40px rgba(87, 0, 239, 0.6);
 }

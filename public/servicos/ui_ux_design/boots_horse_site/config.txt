@@ -1,0 +1,7 @@
+tipo=UI/UX Design
+nome=Boots Horse — Experiência E-commerce
+modal=files
+url=https://bootshorse.com.br
+logo=/logos/boots-horse.svg
+dominio=bootshorse.com.br
+descricao=Experiência responsiva criada no Figma, com hierarquia visual clara, navegação intuitiva e pontos de ação pensados para facilitar a descoberta dos produtos e o contato comercial.

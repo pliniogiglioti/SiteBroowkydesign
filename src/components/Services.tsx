@@ -354,6 +354,8 @@ export default function Services() {
   const [openIndex, setOpenIndex] = useState<number>(0)
   const [selectedProject, setSelectedProject] = useState<{ serviceIndex: number; workIndex: number } | null>(null)
   const [selectedPdf, setSelectedPdf] = useState<ProjectFile | null>(null)
+  const [expandedImage, setExpandedImage] = useState<{ src: string; alt: string } | null>(null)
+  const [activeProductSection, setActiveProductSection] = useState(0)
   const carouselRefs = useRef<Array<HTMLDivElement | null>>([])
   const carouselState = useRef<Array<{
     current: number
@@ -371,6 +373,18 @@ export default function Services() {
   }>>([])
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  useEffect(() => {
+    if (!expandedImage) return
+
+    const closeExpandedImage = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setExpandedImage(null)
+    }
+
+    window.addEventListener('keydown', closeExpandedImage)
+    return () => window.removeEventListener('keydown', closeExpandedImage)
+  }, [expandedImage])
+
   const modalService = selectedProject ? services[selectedProject.serviceIndex] : null
   const modalWork = selectedProject
     ? serviceWorks[selectedProject.serviceIndex][selectedProject.workIndex]
@@ -385,6 +399,76 @@ export default function Services() {
   const relatedWorks = selectedProject
     ? serviceWorks[selectedProject.serviceIndex].filter((_, index) => index !== selectedProject.workIndex)
     : []
+  const productCaseSections = selectedProject?.serviceIndex === 0
+    ? [
+        {
+          title: 'Direção visual',
+          description:
+            'As escolhas de cor, tipografia e direção de imagem estabelecem personalidade, contraste e reconhecimento para o produto.',
+          files: modalFiles.filter((file) => {
+            const name = file.name.toLowerCase()
+            return name.includes('prancha') || name.includes('fundamentos')
+          }),
+        },
+        {
+          title: 'Sistema',
+          description:
+            'Grid, espaçamento, raios e componentes transformam a direção criativa em uma linguagem consistente e escalável.',
+          files: modalFiles.filter((file) => {
+            const name = file.name.toLowerCase()
+            return (
+              name.includes('interface') ||
+              name.includes('componentes') ||
+              name.includes('grid') ||
+              name.includes('navegacao')
+            )
+          }),
+        },
+        {
+          title: 'Aplicações',
+          description:
+            'O sistema ganha vida em contextos reais, mantendo hierarquia, acabamento e coerência no desktop e no mobile.',
+          files: modalFiles.filter((file) => file.name.toLowerCase().includes('aplicacao')),
+        },
+      ]
+    : []
+  const uxCaseSections = selectedProject?.serviceIndex === 1
+    ? [
+        {
+          title: 'Descoberta',
+          description:
+            'A experiência apresenta proposta, identidade e caminhos principais com hierarquia suficiente para orientar sem sobrecarregar.',
+          files: modalFiles.filter((file) => {
+            const name = file.name.toLowerCase()
+            return (
+              name.includes('home desktop') ||
+              name.includes('experiencia produto') ||
+              name.includes('historia marca')
+            )
+          }),
+        },
+        {
+          title: 'Responsividade',
+          description:
+            'Conteúdo, navegação e ações são reorganizados para preservar contexto, legibilidade e continuidade em telas menores.',
+          files: modalFiles.filter((file) => file.name.toLowerCase().includes('mobile')),
+        },
+        {
+          title: 'Conversão',
+          description:
+            'Benefícios, prova de valor e chamadas para ação reduzem incertezas e conduzem o usuário ao próximo passo.',
+          files: modalFiles.filter((file) => {
+            const name = file.name.toLowerCase()
+            return name.includes('revendedor') || name.includes('beneficios')
+          }),
+        },
+      ]
+    : []
+  const activeCaseSections = selectedProject?.serviceIndex === 0
+    ? productCaseSections
+    : selectedProject?.serviceIndex === 1
+      ? uxCaseSections
+      : []
 
   const getCarouselState = (serviceIndex: number) => {
     if (!carouselState.current[serviceIndex]) {
@@ -543,23 +627,153 @@ export default function Services() {
 
     if (!project || Date.now() < state.suppressClickUntil || state.didDrag) return
 
+    setActiveProductSection(0)
     setSelectedPdf(serviceIndex === 2 ? project.files.find((file) => file.type === 'pdf') ?? null : null)
     setSelectedProject({ serviceIndex, workIndex })
   }
 
-  const renderProjectFile = (file: ProjectFile) => {
+  const renderProjectFile = (file: ProjectFile, fileIndex = 0) => {
     if (file.type === 'pdf') {
       return <PdfPreview key={file.path} file={file} />
     }
 
     if (file.type === 'image') {
+      const normalizedName = file.name.toLowerCase()
+      const isMobile = normalizedName.includes('mobile') || normalizedName.includes('responsivo')
+      const isMainJourney =
+        fileIndex === 0 ||
+        normalizedName.includes('desktop') ||
+        normalizedName.includes('interface principal') ||
+        normalizedName.includes('aplicacao home') ||
+        normalizedName.includes('aplicacao comercial') ||
+        normalizedName.includes('experiencia produto') ||
+        normalizedName.includes('historia marca') ||
+        normalizedName.includes('beneficios') ||
+        normalizedName.includes('revendedor')
+      const isProductDesign = selectedProject?.serviceIndex === 0
+      const isWideDetail =
+        isProductDesign &&
+        (normalizedName.includes('grid') || normalizedName.includes('navegacao'))
+      let experienceLabel = 'Jornada principal'
+      let explanation =
+        'A primeira dobra comunica valor rapidamente e oferece caminhos claros para descoberta e conversão.'
+
+      if (isProductDesign) {
+        if (normalizedName.includes('aplicacao mobile')) {
+          experienceLabel = 'Aplicação mobile'
+          explanation =
+            'A linguagem visual se adapta ao formato vertical sem perder hierarquia, identidade ou clareza dos elementos principais.'
+        } else if (normalizedName.includes('aplicacao home')) {
+          experienceLabel = 'Aplicação principal'
+          explanation =
+            'A aplicação principal reúne fotografia, mensagem, navegação e ações dentro do sistema definido para a marca.'
+        } else if (normalizedName.includes('aplicacao comercial')) {
+          experienceLabel = 'Aplicação comercial'
+          explanation =
+            'A direção visual acompanha a jornada comercial e preserva consistência nos pontos de maior intenção.'
+        } else if (normalizedName.includes('fundamentos paleta')) {
+          experienceLabel = 'Paleta cromática'
+          explanation =
+            'A seleção de cores cria unidade com o universo da marca e estabelece contraste entre superfícies, conteúdo e ações.'
+        } else if (normalizedName.includes('fundamentos tipografia')) {
+          experienceLabel = 'Sistema tipográfico'
+          explanation =
+            'Pesos e escalas tipográficas organizam leitura, hierarquia e personalidade sem comprometer a clareza.'
+        } else if (normalizedName.includes('fundamentos identidade')) {
+          experienceLabel = 'Identidade e mensagem'
+          explanation =
+            'Assinatura, linguagem e mensagem principal trabalham juntas para construir uma presença reconhecível.'
+        } else if (normalizedName.includes('interface')) {
+          experienceLabel = 'Interface principal'
+          explanation =
+            'A composição principal equilibra fotografia, mensagem e ações para transformar identidade em produto digital.'
+        } else if (normalizedName.includes('componentes raios')) {
+          experienceLabel = 'Raios e superfícies'
+          explanation =
+            'Os raios e tratamentos de superfície repetem uma lógica consistente em diferentes escalas.'
+        } else if (normalizedName.includes('componentes navegacao')) {
+          experienceLabel = 'Componente de navegação'
+          explanation =
+            'A navegação concentra identidade, hierarquia e ações dentro de um componente reutilizável.'
+        } else if (normalizedName.includes('componentes paleta')) {
+          experienceLabel = 'Tokens de cor'
+          explanation =
+            'Os tokens transformam a paleta em regras aplicáveis e consistentes em toda a interface.'
+        } else if (normalizedName.includes('componentes grid')) {
+          experienceLabel = 'Grid e medidas'
+          explanation =
+            'Colunas e medidas definem alinhamento, ritmo e relações proporcionais entre os elementos.'
+        } else if (normalizedName.includes('grid')) {
+          experienceLabel = 'Grid e espaçamento'
+          explanation =
+            'O sistema de espaçamento organiza ritmo, alinhamento e respiro entre conteúdo, imagem e interação.'
+        } else if (normalizedName.includes('navegacao')) {
+          experienceLabel = 'Navegação aplicada'
+          explanation =
+            'A navegação traduz o sistema visual em um componente funcional, claro e coerente com a marca.'
+        } else {
+          experienceLabel = 'Direção visual'
+          explanation =
+            'A prancha conecta identidade, hierarquia, componentes e aplicações em um sistema visual único.'
+        }
+      } else if (isMobile) {
+        experienceLabel = 'Experiência responsiva'
+        explanation =
+          'A experiência reorganiza conteúdo e ações para preservar clareza, leitura e navegação em telas menores.'
+      } else if (normalizedName.includes('revendedor')) {
+        experienceLabel = 'Jornada de conversão'
+        explanation =
+          'A jornada reduz dúvidas, apresenta benefícios e conduz o usuário até a ação comercial principal.'
+      } else if (normalizedName.includes('historia')) {
+        experienceLabel = 'Narrativa de marca'
+        explanation =
+          'A narrativa institucional transforma história, propósito e credibilidade em uma sequência visual fácil de compreender.'
+      } else if (normalizedName.includes('beneficios')) {
+        experienceLabel = 'Benefícios e decisão'
+        explanation =
+          'Benefícios são agrupados e priorizados para apoiar comparação, reduzir incerteza e aproximar o usuário da decisão.'
+      } else if (normalizedName.includes('produto')) {
+        experienceLabel = 'Descoberta e produto'
+        explanation =
+          'A hierarquia ajuda o usuário a entender a proposta, explorar a oferta e encontrar o próximo passo.'
+      }
+
       return (
-        <img
+        <figure
           key={file.path}
-          src={file.path}
-          alt={file.name}
-          className="aspect-[4/3] w-full rounded-2xl border border-white/10 object-cover"
-        />
+          role="button"
+          tabIndex={0}
+          aria-label={`Ampliar ${experienceLabel}`}
+          onClick={() => setExpandedImage({ src: file.path, alt: `${experienceLabel} — ${file.name}` })}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              setExpandedImage({ src: file.path, alt: `${experienceLabel} — ${file.name}` })
+            }
+          }}
+          className={`glass-card group/experience relative overflow-hidden rounded-2xl border border-white/10 ${
+            isMainJourney || isWideDetail ? 'sm:col-span-2' : ''
+          } self-start cursor-zoom-in outline-none transition-colors hover:border-white/25 focus-visible:ring-2 focus-visible:ring-[#5700ef]`}
+        >
+          <div className="flex items-center justify-center bg-black/25 p-2 sm:p-3">
+            <img
+              src={file.path}
+              alt={`${experienceLabel} — ${file.name}`}
+              className="block h-auto w-full rounded-[14px] object-contain object-top shadow-2xl"
+            />
+          </div>
+          <figcaption className="relative border-t border-white/8 bg-black/35 px-5 py-4 text-left">
+            <span className="font-dm text-[10px] uppercase tracking-[0.2em] text-white/50">
+              {isProductDesign ? 'Estudo de design' : 'Estudo de experiência'}
+            </span>
+            <p className="mt-1 font-geist text-sm font-semibold text-white sm:text-base">
+              {experienceLabel}
+            </p>
+            <p className="mt-1.5 max-w-2xl font-dm text-[11px] leading-relaxed text-white/55 sm:text-xs">
+              {explanation}
+            </p>
+          </figcaption>
+        </figure>
       )
     }
 
@@ -578,11 +792,11 @@ export default function Services() {
 
   return (
     <section id="services" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-14 md:py-20">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="grid grid-cols-1 items-start gap-12 xl:grid-cols-[1.15fr_1fr] xl:gap-14">
 
           {/* Left: title + description + cta */}
-          <div className="flex flex-col gap-8 lg:sticky lg:top-28">
+          <div className="flex flex-col gap-8 xl:sticky xl:top-28">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -704,9 +918,23 @@ export default function Services() {
                                         event.stopPropagation()
                                         openProject(i, workIndex)
                                       }}
-                                      className="service-carousel-card glass-card group/project relative flex aspect-square w-full flex-col justify-end overflow-hidden rounded-[18px] bg-[#111] p-4 text-left sm:rounded-[22px] lg:rounded-[26px]"
+                                      className={`service-carousel-card glass-card group/project relative flex w-full flex-col justify-end overflow-hidden rounded-[18px] bg-[#111] p-4 text-left sm:rounded-[22px] lg:rounded-[26px] ${
+                                        i === 2 ? 'aspect-video' : i <= 1 ? 'aspect-[3/2]' : 'aspect-square'
+                                      }`}
                                     >
-                                      {work.coverPdf ? (
+                                      {work.logo ? (
+                                        <div className="absolute inset-0 z-0 flex flex-col items-center justify-center gap-5 bg-[radial-gradient(circle_at_50%_42%,rgba(255,255,255,0.055),transparent_54%)] px-8">
+                                          <div className="absolute inset-[1px] rounded-[inherit] bg-black/20 backdrop-blur-xl" />
+                                          <img
+                                            src={work.logo}
+                                            alt=""
+                                            className="relative z-10 h-16 w-auto max-w-[58%] object-contain brightness-0 invert sm:h-20"
+                                          />
+                                          <span className="relative z-10 font-dm text-[10px] tracking-[0.22em] text-white/42 sm:text-xs">
+                                            {work.domain}
+                                          </span>
+                                        </div>
+                                      ) : work.coverPdf ? (
                                         <div className="service-carousel-card-bg absolute inset-0 z-0">
                                           <PdfCover file={work.coverPdf} fit={i === 2 ? 'contain' : 'cover'} />
                                         </div>
@@ -718,7 +946,7 @@ export default function Services() {
                                           style={{ backgroundImage: `url(${work.image})` }}
                                         />
                                       )}
-                                      {i !== 2 && (
+                                      {!work.logo && i !== 2 && (
                                         <>
                                           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none transition-opacity duration-300 group-hover/project:opacity-90" />
                                           <div className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full glass flex items-center justify-center text-white/60 opacity-0 transition-all duration-300 group-hover/project:opacity-100 group-hover/project:text-white">
@@ -860,8 +1088,8 @@ export default function Services() {
                     )}
                   </div>
                 ) : (
-                  <div className="relative z-10 grid h-full grid-cols-1 gap-8 overflow-y-auto px-5 pb-8 pt-20 md:h-auto md:max-h-[calc(100vh-4rem)] md:gap-12 md:p-10 lg:grid-cols-[0.82fr_1.18fr] lg:p-12">
-                    <div className="flex flex-col justify-between gap-8 lg:sticky lg:top-0 lg:self-start">
+                  <div className="relative z-10 flex h-full flex-col gap-10 overflow-y-auto px-5 pb-8 pt-20 md:h-auto md:max-h-[calc(100vh-4rem)] md:gap-12 md:p-10 lg:p-12">
+                    <div className="flex w-full flex-col gap-8">
                       <div>
                         <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
                           {modalService.number}. {modalService.title}
@@ -869,26 +1097,85 @@ export default function Services() {
                         <h3 className="section-title text-[clamp(2rem,5vw,4.2rem)] text-white mt-4 leading-none">
                           {modalWork.title}
                         </h3>
-                        <p className="font-dm text-[16px] text-white/55 leading-relaxed max-w-xl mt-6">
-                          Projeto de {modalWork.category.toLowerCase()} criado para apresentar a direcao visual,
-                          organizar aplicacoes e transformar a ideia em uma experiencia clara, consistente e memoravel.
+                        <p className="mt-6 w-full max-w-6xl font-dm text-[16px] leading-relaxed text-white/55 md:text-[18px]">
+                          {modalWork.description ??
+                            `Projeto de ${modalWork.category.toLowerCase()} criado para apresentar a direção visual,
+                            organizar aplicações e transformar a ideia em uma experiência clara, consistente e memorável.`}
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-3 gap-3 max-w-xl">
-                        {['Conceito', modalWork.category, 'Aplicacoes'].map((item) => (
-                          <div key={item} className="border-t border-white/12 pt-3">
-                            <span className="font-dm text-xs text-white/35 uppercase tracking-[0.14em]">
-                              {item}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
+                      {selectedProject && selectedProject.serviceIndex <= 1 ? (
+                        <div className="grid w-full grid-cols-3 gap-2 sm:gap-4">
+                          {activeCaseSections.map((section, sectionIndex) => (
+                            <button
+                              key={section.title}
+                              type="button"
+                              onClick={() => setActiveProductSection(sectionIndex)}
+                              aria-pressed={activeProductSection === sectionIndex}
+                              className={`relative min-h-20 overflow-hidden rounded-b-[14px] border-t px-3 py-4 text-left transition-all duration-300 sm:min-h-24 sm:px-5 sm:py-5 ${
+                                activeProductSection === sectionIndex
+                                  ? 'border-[#7c3cff]/80 bg-[#5700ef]/15 shadow-[inset_0_1px_0_rgba(151,92,255,0.2),inset_0_0_34px_rgba(87,0,239,0.1)]'
+                                  : 'border-white/35 hover:border-white/70 hover:bg-gradient-to-b hover:from-white/[0.025] hover:to-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`font-dm text-[9px] font-medium uppercase tracking-[0.12em] transition-colors sm:text-xs sm:tracking-[0.16em] ${
+                                  activeProductSection === sectionIndex
+                                    ? 'text-white/95'
+                                    : 'text-white/35'
+                                }`}
+                              >
+                                {section.title}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="grid w-full grid-cols-3 gap-3">
+                          {['Conceito', modalWork.category, 'Aplicações'].map((item) => (
+                            <div key={item} className="border-t border-white/12 pt-3">
+                              <span className="font-dm text-xs uppercase tracking-[0.14em] text-white/35">
+                                {item}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {modalFiles.length > 0
-                        ? modalFiles.map(renderProjectFile)
+                    <div className={selectedProject && selectedProject.serviceIndex <= 1 ? 'flex flex-col gap-14' : 'grid grid-cols-1 gap-4 sm:grid-cols-2'}>
+                      {selectedProject && selectedProject.serviceIndex <= 1 && activeCaseSections.length > 0
+                        ? (
+                          <AnimatePresence mode="wait">
+                            <motion.section
+                              key={activeCaseSections[activeProductSection].title}
+                              initial={{ opacity: 0, y: 12 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -8 }}
+                              transition={{ duration: 0.22, ease: 'easeOut' }}
+                            >
+                              <p className="mb-7 max-w-4xl font-dm text-sm leading-relaxed text-white/48 md:text-base">
+                                {activeCaseSections[activeProductSection].description}
+                              </p>
+                              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                {activeCaseSections[activeProductSection].files.map((file) =>
+                                  renderProjectFile(file, modalFiles.indexOf(file)),
+                                )}
+                              </div>
+                            </motion.section>
+                          </AnimatePresence>
+                        )
+                        : modalFiles.length > 0
+                          ? modalFiles.map((file, fileIndex) => renderProjectFile(file, fileIndex))
+                        : modalWork.image
+                          ? (
+                            <div
+                              className="sm:col-span-2 aspect-[16/10] rounded-2xl overflow-hidden relative border border-white/10 bg-cover bg-top"
+                              style={{ backgroundImage: `url(${modalWork.image})` }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                            </div>
+                          )
                         : relatedWorks.slice(0, 2).map((work) => (
                             <div
                               key={work.title}
@@ -908,11 +1195,15 @@ export default function Services() {
                           ))}
 
                       <a
-                        href="#projects"
-                        onClick={() => setSelectedProject(null)}
+                        href={modalWork.url ?? '#projects'}
+                        target={modalWork.url ? '_blank' : undefined}
+                        rel={modalWork.url ? 'noreferrer' : undefined}
+                        onClick={() => {
+                          if (!modalWork.url) setSelectedProject(null)
+                        }}
                         className="sm:col-span-2 font-dm text-sm text-white/60 hover:text-white transition-colors flex items-center justify-end gap-1.5"
                       >
-                        Ver projetos relacionados
+                        {modalWork.url ? 'Visitar projeto publicado' : 'Ver projetos relacionados'}
                         <ArrowUpRight size={14} />
                       </a>
                     </div>
@@ -920,6 +1211,38 @@ export default function Services() {
                 )}
               </motion.div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {expandedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-black/92 p-3 backdrop-blur-xl sm:p-8"
+            onClick={() => setExpandedImage(null)}
+          >
+            <motion.img
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.24, ease: 'easeOut' }}
+              src={expandedImage.src}
+              alt={expandedImage.alt}
+              className="max-h-[94vh] max-w-[96vw] rounded-xl object-contain shadow-[0_30px_100px_rgba(0,0,0,0.8)] sm:rounded-2xl"
+              onClick={(event) => event.stopPropagation()}
+            />
+            <button
+              type="button"
+              aria-label="Fechar imagem ampliada"
+              onClick={() => setExpandedImage(null)}
+              className="glass absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full text-white/75 transition-colors hover:text-white sm:right-8 sm:top-8"
+            >
+              <X size={18} />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

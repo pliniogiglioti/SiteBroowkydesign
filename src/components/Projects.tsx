@@ -94,8 +94,8 @@ export default function Projects() {
 
   return (
     <section id="projects" ref={ref} className="relative overflow-hidden bg-[#0c0b0b] py-14 md:py-20">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="mb-9 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_440px] lg:items-start">
+      <div className="site-container mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="mb-9 grid grid-cols-1 gap-10 xl:grid-cols-[1fr_440px] xl:items-start">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -144,7 +144,7 @@ export default function Projects() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 xl:grid-cols-4">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} isInView={isInView} />
           ))}

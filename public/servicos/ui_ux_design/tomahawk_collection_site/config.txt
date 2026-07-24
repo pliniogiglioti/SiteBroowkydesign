@@ -1,0 +1,7 @@
+tipo=UI/UX Design
+nome=Tomahawk Collection — Experiência Digital
+modal=files
+url=https://tomahawkcollection.com.br
+logo=/logos/tomahawk-collection.svg
+dominio=tomahawkcollection.com.br
+descricao=Interface responsiva concebida no Figma, combinando narrativa visual imersiva, navegação objetiva, hierarquia tipográfica e chamadas estratégicas para conduzir usuários e potenciais revendedores.

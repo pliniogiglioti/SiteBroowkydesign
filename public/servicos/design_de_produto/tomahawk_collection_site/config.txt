@@ -1,0 +1,7 @@
+tipo=Design de Produto
+nome=Tomahawk Collection — Plataforma de Marca
+modal=files
+url=https://tomahawkcollection.com.br
+logo=/logos/tomahawk-collection.svg
+dominio=tomahawkcollection.com.br
+descricao=Produto digital criado para posicionar a marca, apresentar suas coleções e estruturar a jornada comercial de novos revendedores com clareza, desejo e percepção de valor.
