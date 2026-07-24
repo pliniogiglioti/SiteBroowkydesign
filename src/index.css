@@ -244,6 +244,41 @@
   .hero-name {
     font-size: clamp(68px, 20vw, 96px);
   }
+
+  .case-tabs button {
+    min-height: 76px;
+    padding: 14px 10px;
+  }
+
+  .case-modal-content {
+    overscroll-behavior: contain;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1366px) {
+  .site-container {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  .case-modal-shell {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .case-modal-content {
+    padding: 32px !important;
+  }
+
+  .case-tabs button {
+    min-height: 88px;
+  }
+}
+
+@media (min-width: 1367px) and (max-width: 2199px) {
+  .case-modal-shell {
+    max-width: 1680px;
+  }
 }
 
 @media (min-width: 2200px) {
@@ -283,6 +318,45 @@
     width: 160px !important;
     height: 160px !important;
     border-radius: 14px !important;
+  }
+
+  .case-modal-shell {
+    max-width: 2280px !important;
+    padding-left: 96px !important;
+    padding-right: 96px !important;
+  }
+
+  .case-modal-panel {
+    border-radius: 42px !important;
+  }
+
+  .case-modal-content {
+    max-height: calc(100vh - 96px) !important;
+    gap: 64px !important;
+    padding: 72px !important;
+  }
+
+  .case-modal-content > div:first-child p {
+    max-width: 1700px !important;
+    font-size: 22px !important;
+  }
+
+  .case-tabs {
+    gap: 24px !important;
+  }
+
+  .case-tabs button {
+    min-height: 132px !important;
+    padding: 30px 28px !important;
+    border-radius: 0 20px 20px 20px !important;
+  }
+
+  .case-tabs button span {
+    font-size: 15px !important;
+  }
+
+  .case-study-grid {
+    gap: 32px !important;
   }
 }
 

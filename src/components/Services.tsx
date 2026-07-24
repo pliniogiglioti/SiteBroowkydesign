@@ -909,7 +909,7 @@ export default function Services() {
                                 {serviceWorks[i].map((work, workIndex) => (
                                   <div
                                     key={`${service.number}-${work.title}-${work.category}`}
-                                    className="w-1/2 min-w-[50%] shrink-0 px-1.5"
+                                    className="w-[82%] min-w-[82%] shrink-0 px-1.5 sm:w-1/2 sm:min-w-[50%]"
                                   >
                                     <button
                                       type="button"
@@ -1009,14 +1009,14 @@ export default function Services() {
               setSelectedProject(null)
             }}
           >
-            <div className="mx-auto flex h-full max-w-[1520px] items-center px-0 md:px-10">
+            <div className="case-modal-shell mx-auto flex h-full max-w-[1520px] items-center px-0 md:px-5 lg:px-10">
               <motion.div
                 initial={{ y: 18, opacity: 0, scale: 0.98 }}
                 animate={{ y: 0, opacity: 1, scale: 1 }}
                 exit={{ y: 18, opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.24, ease: 'easeOut' }}
                 onClick={(event) => event.stopPropagation()}
-                className="glass-panel relative h-full w-full overflow-hidden rounded-none md:h-auto md:max-h-full md:rounded-[30px]"
+                className="case-modal-panel glass-panel relative h-full w-full overflow-hidden rounded-none md:h-auto md:max-h-full md:rounded-[24px] lg:rounded-[30px]"
               >
                 <div className="absolute top-0 right-0 w-[360px] h-[260px] bg-[#5700ef]/18 blur-[100px] pointer-events-none" />
 
@@ -1088,7 +1088,7 @@ export default function Services() {
                     )}
                   </div>
                 ) : (
-                  <div className="relative z-10 flex h-full flex-col gap-10 overflow-y-auto px-5 pb-8 pt-20 md:h-auto md:max-h-[calc(100vh-4rem)] md:gap-12 md:p-10 lg:p-12">
+                  <div className="case-modal-content relative z-10 flex h-full flex-col gap-10 overflow-y-auto px-4 pb-8 pt-20 sm:px-5 md:h-auto md:max-h-[calc(100vh-4rem)] md:gap-10 md:p-8 lg:gap-12 lg:p-12">
                     <div className="flex w-full flex-col gap-8">
                       <div>
                         <span className="font-dm text-xs text-[#5700ef] tracking-[0.22em] uppercase">
@@ -1105,7 +1105,7 @@ export default function Services() {
                       </div>
 
                       {selectedProject && selectedProject.serviceIndex <= 1 ? (
-                        <div className="grid w-full grid-cols-3 gap-2 sm:gap-4">
+                        <div className="case-tabs grid w-full grid-cols-3 gap-1.5 sm:gap-4">
                           {activeCaseSections.map((section, sectionIndex) => (
                             <button
                               key={section.title}
@@ -1157,7 +1157,7 @@ export default function Services() {
                               <p className="mb-7 max-w-4xl font-dm text-sm leading-relaxed text-white/48 md:text-base">
                                 {activeCaseSections[activeProductSection].description}
                               </p>
-                              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                              <div className="case-study-grid grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5">
                                 {activeCaseSections[activeProductSection].files.map((file) =>
                                   renderProjectFile(file, modalFiles.indexOf(file)),
                                 )}
